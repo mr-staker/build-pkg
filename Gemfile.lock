@@ -12,6 +12,15 @@ GEM
     clamp (1.0.1)
     dotenv (2.7.6)
     facter (2.5.7)
+    faraday (1.4.1)
+      faraday-excon (~> 1.1)
+      faraday-net_http (~> 1.0)
+      faraday-net_http_persistent (~> 1.1)
+      multipart-post (>= 1.2, < 3)
+      ruby2_keywords (>= 0.0.4)
+    faraday-excon (1.1.0)
+    faraday-net_http (1.0.1)
+    faraday-net_http_persistent (1.1.0)
     fast_gettext (1.1.2)
     ffi (1.12.2)
     fpm (1.12.0)
@@ -44,6 +53,7 @@ GEM
     json_pure (1.8.6)
     locale (2.1.3)
     multi_json (1.15.0)
+    multipart-post (2.1.1)
     mustache (0.99.8)
     parallel (1.20.1)
     parser (3.0.0.0)
@@ -81,6 +91,7 @@ GEM
     ruby-xz (0.2.3)
       ffi (~> 1.9)
       io-like (~> 0.3)
+    ruby2_keywords (0.0.4)
     safe_yaml (1.0.5)
     stud (0.0.23)
     systemu (2.6.5)
@@ -90,6 +101,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  faraday
   fpm-cookery
   rake
   rubocop

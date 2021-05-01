@@ -2,6 +2,7 @@
 
 source 'https://rubygems.org'
 
+gem 'faraday'
 gem 'fpm-cookery'
 gem 'rake'
 gem 'rubocop'

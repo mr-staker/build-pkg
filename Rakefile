@@ -47,6 +47,7 @@ end
 
 task build: %w[build:default]
 
+# rubocop:disable Metrics/BlockLength
 namespace :clean do
   desc 'Clean build files'
   task :default do
@@ -54,6 +55,7 @@ namespace :clean do
     sh 'fpm-cook clean'
     rm_rf 'tmp-build'
     rm_rf 'tmp-dest'
+    rm_f 'build.yml'
   end
 
   desc 'Clean build artefacts'
@@ -74,8 +76,11 @@ namespace :clean do
   task all: %w[clean:default clean:pkg] do
     recipe_dir
     rm_rf 'cache' unless File.exist? 'cache/dummy.tar.gz'
+    rm_rf 'go'
+    rm_rf 'git'
   end
 end
+# rubocop:enable Metrics/BlockLength
 
 task clean: %w[clean:default]
 

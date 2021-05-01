@@ -1,0 +1,21 @@
+[Install]
+WantedBy=multi-user.target
+
+[Unit]
+Description=Elrond Node %i
+After=network-online.target
+
+[Service]
+; node is looking for this in CWD and it ignores PATH
+Environment="ARWEN_PATH=/opt/elrond/bin/arwen"
+
+User=elrond-node-%i
+; technically, this also holds config, but the node binary makes it difficult
+; to separate config in etc and variable data in var
+WorkingDirectory=/opt/var/elrond/node-%i
+ExecStart=/opt/elrond/bin/node -use-log-view -log-level *:INFO -rest-api-interface localhost:8080
+StandardOutput=journal
+StandardError=journal
+Restart=always
+RestartSec=3
+LimitNOFILE=4096
