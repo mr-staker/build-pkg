@@ -13,6 +13,7 @@ bundle install
 
 ## Build recipes
 
+ * [bfg](/recipes/bfg)
  * [createrepo](/recipes/createrepo)
  * [hugo](/recipes/hugo)
  * [modulemd](/recipes/modulemd)
