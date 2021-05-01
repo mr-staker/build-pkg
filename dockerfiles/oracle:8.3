@@ -1,0 +1,9 @@
+FROM oraclelinux:8.3
+MAINTAINER hello@mr.staker.ltd
+ENV SHELL=/bin/bash
+
+RUN yum install -y gcc gcc-c++ make curl git rpm-build
+RUN curl -L -o omnibus.sh https://omnitruck.cinc.sh/install.sh && chmod +x omnibus.sh && ./omnibus.sh -v 16.11.7
+RUN /opt/cinc/embedded/bin/gem install fpm-cookery
+
+ENV PATH=/opt/cinc/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin

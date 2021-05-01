@@ -1,0 +1,7 @@
+[staker]
+name=Mr Staker rpm repository
+baseurl=https://rpm.staker.ltd/$basearch/
+gpgkey=file:///etc/staker-repo/release-signing-key-2021.gpg.pem
+gpgcheck=1
+repo_gpgcheck=1
+enabled=1
