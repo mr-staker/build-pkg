@@ -14,6 +14,7 @@ bundle install
 ## Build recipes
 
  * [createrepo](/recipes/createrepo)
+ * [hugo](/recipes/hugo)
  * [modulemd](/recipes/modulemd)
  * [staker-repo](/recipes/staker-repo)
  * [zck](/recipes/zck)
