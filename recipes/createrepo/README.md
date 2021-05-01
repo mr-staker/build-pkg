@@ -21,8 +21,8 @@ These build dependencies are not available in Ubuntu 20.04 repositories, therefo
 
 The recipes for building those packages are available here:
 
- * [zck](https://github.com/mr-staker/build-pkg/tree/main/recipes/zck)
- * [modulemd](https://github.com/mr-staker/build-pkg/tree/main/recipes/modulemd)
+ * [zck](../zck)
+ * [modulemd](../modulemd)
 
 ## Build
 

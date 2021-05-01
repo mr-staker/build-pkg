@@ -10,3 +10,10 @@ curl -OL https://cinc.osuosl.org/files/unstable/cinc-workstation/21.3.346/ubuntu
 eval "$(cinc shell-init zsh)" # or bash if you use it
 bundle install
 ```
+
+## Build recipes
+
+ * [createrepo](/recipes/createrepo)
+ * [modulemd](/recipes/modulemd)
+ * [staker-repo](/recipes/staker-repo)
+ * [zck](/recipes/zck)
