@@ -1,8 +1,8 @@
-FROM oraclelinux:8.3
+FROM ubuntu:20.04
 MAINTAINER hello@mr.staker.ltd
 ENV SHELL=/bin/bash
 
-RUN yum install -y gcc gcc-c++ make curl git rpm-build
+RUN apt update && apt install -yqq curl build-essential git
 RUN curl -LO https://get.golang.org/$(uname)/go_installer && chmod +x go_installer && ./go_installer
 RUN curl -L -o omnibus.sh https://omnitruck.cinc.sh/install.sh && chmod +x omnibus.sh && ./omnibus.sh -v 16.11.7
 RUN /opt/cinc/embedded/bin/gem install fpm-cookery
