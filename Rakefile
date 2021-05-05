@@ -18,6 +18,7 @@ task :cop do
   sh 'rubocop'
 end
 
+# rubocop:disable Metrics/BlockLength
 namespace :build do
   desc 'Build package'
   task :default do
@@ -45,7 +46,18 @@ namespace :build do
     sh "bundle exec fpm-cook package --docker --dockerfile #{dockerfile} "\
       "--docker-image #{docker_img_prefix}/#{ENV['image']}"
   end
+
+  desc 'Build the package in Vagrant'
+  task :vagrant do
+    recipe_dir
+
+    sh 'vagrant up'
+
+    build = 'cd /recipe && /opt/cinc/embedded/bin/fpm-cook package --no-deps'
+    sh %(vagrant ssh -c 'sudo su - -c "#{build}"')
+  end
 end
+# rubocop:enable Metrics/BlockLength
 
 task build: %w[build:default]
 
@@ -54,7 +66,6 @@ namespace :clean do
   desc 'Clean build files'
   task :default do
     recipe_dir
-    sh 'fpm-cook clean'
     rm_rf 'tmp-build'
     rm_rf 'tmp-dest'
     rm_f 'build.yml'
@@ -72,6 +83,12 @@ namespace :clean do
     `#{cmd}`.split("\n").each do |img|
       sh "docker rmi #{img}"
     end
+  end
+
+  desc 'Clean Vagrant box'
+  task :vagrant do
+    sh 'vagrant destroy -f'
+    rm_rf '.vagrant'
   end
 
   desc 'Remove all build files'

@@ -13,6 +13,6 @@ sudo apt install build-essential autoconf automake libtool gawk alien fakeroot d
 ## Build
 
 ```bash
-bundle exec rake build target=deb
-bundle exec rake build target=rpm
+bundle exec rake build # deb
+bundle exec rake build:vagrant # rpm
 ```

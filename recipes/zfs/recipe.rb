@@ -3,6 +3,7 @@
 require_relative 'metadata'
 
 # OpenZFS build wrapper
+# rubocop:disable Metrics/ClassLength
 class Zfs < FPM::Cookery::Recipe
   homepage build_config[:homepage]
   name 'zfs-dummy'
@@ -60,25 +61,46 @@ class Zfs < FPM::Cookery::Recipe
     end
   end
 
+  # rubocop:disable Metrics/AbcSize
+  # rubocop:disable Metrics/MethodLength
   def install_rpm
     macros_file = "#{ENV['HOME']}/.rpmmacros"
     File.write macros_file, "%_buildhost mr.staker.ltd\n"
 
+    skip_pkg = %w[
+      zfs-test zfs-test-debuginfo libzpool4-debuginfo libuutil3-debuginfo
+      zfs-debuginfo libnvpair3-debuginfo libzfs4-debuginfo zfs-debugsource
+    ]
+
+    # rubocop:disable Metrics/BlockLength
     Dir['*.rpm'].each do |pkg_file|
       abs_pkg_file = File.expand_path pkg_file
       pkg_s = File.basename pkg_file, File.extname(pkg_file)
+
       next if File.extname(pkg_s) == '.src'
 
       pkg_r = File.basename pkg_s, File.extname(pkg_s)
-      pkg_name = pkg_r[0..-9]
+      pkg_b = File.basename pkg_r, File.extname(pkg_r)
 
-      next if pkg_name == 'zfs-test'
+      pkg_name = pkg_b[0..-9]
+      arch = File.extname pkg_s
+
+      next if skip_pkg.include? pkg_name
+
+      if arch == '.x86_64'
+        puts "===> Copy #{pkg_name}"
+        cp abs_pkg_file, pkgdir
+
+        next
+      end
+
+      puts "===> Repackage #{pkg_name}"
 
       Dir.chdir pkgdir do
         rm_f pkgdir("#{pkg_r}.x86_64.rpm")
 
         args = [
-          workdir('fpm-shim').to_s,
+          '/opt/chef/embedded/bin/fpm',
           '--maintainer',
           build_config[:maintainer],
           '--input-type',
@@ -94,9 +116,12 @@ class Zfs < FPM::Cookery::Recipe
         sh(*args)
       end
     end
+    # rubocop:enable Metrics/BlockLength
 
     rm_f macros_file
   end
+  # rubocop:enable Metrics/AbcSize
+  # rubocop:enable Metrics/MethodLength
 
   # rubocop:disable Metrics/AbcSize
   # rubocop:disable Metrics/MethodLength
@@ -107,6 +132,8 @@ class Zfs < FPM::Cookery::Recipe
       pkg_name = pkg_file.split('_').first
 
       next if pkg_name == 'zfs-test'
+
+      puts "===> Repackage #{pkg_name}"
 
       Dir.chdir pkgdir do
         # invoke a patched version of fpm to change metadata and xz compress
@@ -146,3 +173,4 @@ class Zfs < FPM::Cookery::Recipe
   # rubocop:enable Metrics/AbcSize
   # rubocop:enable Metrics/MethodLength
 end
+# rubocop:enable Metrics/ClassLength

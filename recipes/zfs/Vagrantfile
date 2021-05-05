@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+require_relative 'metadata'
+
+Vagrant.configure('2') do |config|
+  config.vm.box = 'generic/oracle8'
+  config.vm.synced_folder '.', '/recipe'
+  config.vm.provision 'shell', inline: <<~SCRIPT
+    dnf -y install oracle-epel-release-el8
+
+    dnf -y install git gcc make autoconf automake libtool rpm-build \
+    kernel-rpm-macros dkms libtirpc-devel libblkid-devel libuuid-devel \
+    libudev-devel openssl-devel zlib-devel libaio-devel libattr-devel \
+    elfutils-libelf-devel kernel-devel kernel-uek-devel python3 python3-devel \
+    python3-setuptools python3-cffi libffi-devel strace htop
+
+    curl -L -o omnibus.sh https://omnitruck.cinc.sh/install.sh && \
+    chmod +x omnibus.sh && ./omnibus.sh -v #{build_config[:cinc_version]}
+    ln -sf /opt/cinc /opt/chef
+
+    /opt/cinc/embedded/bin/gem install fpm-cookery
+  SCRIPT
+end
