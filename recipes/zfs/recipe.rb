@@ -16,18 +16,22 @@ class Zfs < FPM::Cookery::Recipe
   sha256 build_config[:sha256]
 
   # rubocop:disable Metrics/MethodLength
-  def dependency_map
+  def deb_dependency_map
     {
-      'python3-pyzfs' => %w[zfs],
-      'zfs-dracut' => %w[zfs-dkms],
-      'zfs-initramfs' => %w[zfs-dkms],
-      'zfs' => %w[zfs-dkms libnvpair3 libuutil3 libzfs4 libzpool4],
-      'libzfs4-devel' => %w[libzfs4],
-      'libuutil3' => [],
-      'libzfs4' => [],
-      'libzpool4' => [],
-      'libnvpair3' => [],
-      'zfs-dkms' => []
+      'python3-pyzfs' => %w[libzfs4 python3 staker-repo],
+      'zfs-dracut' => %w[zfs zfs-dkms staker-repo],
+      'zfs-initramfs' => %w[zfs zfs-dkms staker-repo],
+      'zfs' => %w[zfs-dkms libnvpair3 libuutil3 libzfs4 libzpool4 staker-repo],
+      'libzfs4-devel' => %w[libzfs4 staker-repo],
+      'libuutil3' => %w[libc6 staker-repo],
+      'libzfs4' => %w[
+        libssl1.1 zlib1g libuuid1 libblkid1 libudev1 libc6 zfs-dkms staker-repo
+      ],
+      'libzpool4' => %w[
+        libc6 libzfs4 libnvpair3 libuuid1 libblkid1 libudev1 staker-repo
+      ],
+      'libnvpair3' => %w[libc6 staker-repo],
+      'zfs-dkms' => %w[dkms staker-repo]
     }
   end
   # rubocop:enable Metrics/MethodLength
@@ -158,7 +162,7 @@ class Zfs < FPM::Cookery::Recipe
           'xz'
         ]
 
-        dependency_map[pkg_name].each do |dep|
+        deb_dependency_map[pkg_name].each do |dep|
           args << '--depends'
           args << dep
         end

@@ -13,6 +13,24 @@ def recipe_dir
   Dir.chdir "recipes/#{ENV['recipe']}"
 end
 
+def check_publisher
+  if ENV['target'].nil?
+    warn 'ERR: unspecified target e.g deb or rpm'
+    Kernel.exit 1
+  end
+
+  return unless ENV['repo'].nil?
+
+  warn 'ERR: unspecified repo where to publish packages'
+  Kernel.exit 1
+end
+
+def clean_dummies
+  Dir['pkg/*dummy*'].each do |pkg|
+    rm_f pkg
+  end
+end
+
 desc 'Run rubocop'
 task :cop do
   sh 'rubocop'
@@ -102,6 +120,33 @@ end
 # rubocop:enable Metrics/BlockLength
 
 task clean: %w[clean:default]
+
+namespace :publish do
+  desc 'Add packages to local repository via repo-mgr'
+  task :default do
+    recipe_dir
+    check_publisher
+    clean_dummies
+    Dir["pkg/*.#{ENV['target']}"].each do |pkg|
+      puts "===> Publish #{File.basename pkg}"
+      sh "repo-mgr add-pkg --repo #{ENV['repo']} --path #{pkg}"
+    end
+  end
+
+  desc 'Remove published packages from local repository via repo-mgr'
+  task :undo do
+    recipe_dir
+    check_publisher
+    clean_dummies
+
+    Dir["pkg/*.#{ENV['target']}"].each do |pkg|
+      puts "===> Unpublish #{File.basename pkg}"
+      sh "repo-mgr remove-pkg --repo #{ENV['repo']} --path #{pkg}"
+    end
+  end
+end
+
+task publish: %w[publish:default]
 
 desc 'Default task - invoke build'
 task default: %w[build:default]
