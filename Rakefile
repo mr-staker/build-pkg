@@ -22,7 +22,9 @@ namespace :build do
   desc 'Build package'
   task :default do
     recipe_dir
-    sh 'fpm-cook package --no-deps'
+    target = ''
+    target = "--target #{ENV['target']}" unless ENV['target'].nil?
+    sh "fpm-cook package --no-deps #{target}"
   end
 
   desc 'Build the package in Docker'
