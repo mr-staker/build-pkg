@@ -81,23 +81,22 @@ def build_config
   @config
 end
 
-# rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/AbcSize
-def setup_environment
-  return if File.exist? 'build.yml'
-
-  networks = {
+def fetch_versions
+  network_branch = {
     'main' => 'master',
     'test' => 'master',
     'dev' => 'main'
   }
 
-  # taking the binaryVersion as the source of truth for pkg version
-  bin_url = 'https://raw.githubusercontent.com/ElrondNetwork/elrond-config-'\
-    "#{ENV['network']}net/#{networks[ENV['network']]}/binaryVersion"
+  if ENV['bin_version'].nil?
+    # taking the binaryVersion as the source of truth for pkg version
+    bin_url = 'https://raw.githubusercontent.com/ElrondNetwork/elrond-config-'\
+      "#{ENV['network']}net/#{network_branch[ENV['network']]}/binaryVersion"
 
-  res = get_url bin_url
-  ENV['bin_version'] = res.strip
+    res = get_url bin_url
+    ENV['bin_version'] = res.strip
+  end
+
   ENV['version'] = ENV['bin_version'].split('/').last.gsub(/[^.\d]/, '')
 
   # get configuration git tag/version
@@ -107,6 +106,14 @@ def setup_environment
 
   ENV['cfg_tag'] = JSON.parse(res)['tag_name']
   ENV['cfg_version'] = ENV['cfg_tag'].split('/').last
+end
+
+# rubocop:disable Metrics/MethodLength
+# rubocop:disable Metrics/AbcSize
+def setup_environment
+  return if File.exist? 'build.yml'
+
+  fetch_versions
 
   ENV['GOPATH'] = "#{abs_path}/go"
 

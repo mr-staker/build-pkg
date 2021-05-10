@@ -45,7 +45,33 @@ bundle exec rake build:docker network=test image=oracle:8.3
 bundle exec rake build:docker network=dev image=ubuntu:20.04
 ```
 
-Pro Tip: run the `clean` task between builds to ensure you start from scratch. The repositories / go modules are cached, so the data downloaded post the initial build is fairly low. To nuke everything, there's a `clean_all` task.
+n.b in case of version mismatch i.e binaryVersion and release tag don't match (release tag being more reliable), you can manually match them using the `bin_version` environment variable, such as:
+
+```bash
+bundle exec rake build:docker network=test image=ubuntu:20.04 bin_version=tags/v1.1.55
+bundle exec rake build:docker network=test image=oracle:8.3 bin_version=tags/v1.1.55
+```
+
+To check if the versions match, read the generated `build.yml` file. This is how a properly formatted build config should look like:
+
+```bash
+---
+:base: https://github.com/ElrondNetwork
+:cfg_repo: elrond-config-testnet
+:bin_repo: elrond-go
+:prx_repo: elrond-proxy-go
+:version: 1.1.55
+:network: test
+:bin_version: tags/v1.1.55
+:cfg_version: T1.1.55.0
+:cfg_tag: T1.1.55.0
+```
+
+Pro Tip: run the `clean` and `clean:pkg` tasks between builds to ensure you start from scratch. The repositories / go modules are cached, so the data downloaded post the initial build is fairly low. To nuke everything, there's a `clean:all` task.
+
+```bash
+bundle exec rake clean clean:pkg
+```
 
 ### Print pkg info
 
