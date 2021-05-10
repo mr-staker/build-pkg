@@ -4,7 +4,7 @@ Elrond node, proxy services + tools pkg build recipe. Built on top of [fpm-cooke
 
 Supports the following Linux distribution families:
 
- * Debian (including derivatives e.g Ubuntu) via deb packages. Built on Ubuntu 18.04.
+ * Debian (including derivatives e.g Ubuntu) via deb packages. Built on Ubuntu 20.04.
  * Red Hat (including rebuilds e.g CentOS/Rocky/Oracle and derivatives) via rpm packages. Built on Oracle Linux 8.3.
 
 ## Reasons for doing this
