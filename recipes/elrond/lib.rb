@@ -81,14 +81,28 @@ def build_config
   @config
 end
 
-def fetch_versions
-  network_branch = {
-    'main' => 'master',
-    'test' => 'master',
-    'dev' => 'main'
+def gen_version
+  return unless ENV['version']
+
+  pref = {
+    'main' => 'v',
+    'test' => 'T',
+    'dev' => 'D'
   }
 
+  ENV['bin_version'] = "tags/v#{ENV['version']}"
+  ENV['cfg_tag'] = "#{pref[ENV['network']]}#{ENV['version']}.0"
+end
+
+# rubocop:disable Metrics/MethodLength
+def gen_bin_version
   if ENV['bin_version'].nil?
+    network_branch = {
+      'main' => 'master',
+      'test' => 'master',
+      'dev' => 'main'
+    }
+
     # taking the binaryVersion as the source of truth for pkg version
     bin_url = 'https://raw.githubusercontent.com/ElrondNetwork/elrond-config-'\
       "#{ENV['network']}net/#{network_branch[ENV['network']]}/binaryVersion"
@@ -97,19 +111,30 @@ def fetch_versions
     ENV['bin_version'] = res.strip
   end
 
-  ENV['version'] = ENV['bin_version'].split('/').last.gsub(/[^.\d]/, '')
+  ENV['pkg_version'] = ENV['bin_version'].split('/').last.gsub(/[^.\d]/, '')
+end
+# rubocop:enable Metrics/MethodLength
 
-  # get configuration git tag/version
-  cfg_url = 'https://api.github.com/repos/ElrondNetwork/elrond-config-'\
-    "#{ENV['network']}net/releases/latest"
-  res = get_url cfg_url
+def gen_cfg_version
+  if ENV['cfg_tag'].nil?
+    # get configuration git tag/version
+    cfg_url = 'https://api.github.com/repos/ElrondNetwork/elrond-config-'\
+      "#{ENV['network']}net/releases/latest"
+    res = get_url cfg_url
 
-  ENV['cfg_tag'] = JSON.parse(res)['tag_name']
+    ENV['cfg_tag'] = JSON.parse(res)['tag_name']
+  end
+
   ENV['cfg_version'] = ENV['cfg_tag'].split('/').last
 end
 
+def fetch_versions
+  gen_version
+  gen_bin_version
+  gen_cfg_version
+end
+
 # rubocop:disable Metrics/MethodLength
-# rubocop:disable Metrics/AbcSize
 def setup_environment
   return if File.exist? 'build.yml'
 
@@ -125,7 +150,7 @@ def setup_environment
     cfg_repo: "elrond-config-#{ENV['network']}net",
     bin_repo: 'elrond-go',
     prx_repo: 'elrond-proxy-go',
-    version: ENV['version'],
+    pkg_version: ENV['pkg_version'],
     network: ENV['network'],
     bin_version: ENV['bin_version'],
     cfg_version: ENV['cfg_version'],
@@ -135,7 +160,6 @@ def setup_environment
   File.write('build.yml', build_config.to_yaml)
 end
 # rubocop:enable Metrics/MethodLength
-# rubocop:enable Metrics/AbcSize
 
 # rubocop:disable Metrics/MethodLength
 # rubocop:disable Metrics/AbcSize

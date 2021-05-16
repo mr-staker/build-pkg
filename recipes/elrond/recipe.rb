@@ -15,7 +15,7 @@ class Elrond < FPM::Cookery::Recipe
 
   name "elrond-#{build_config[:network]}"
   # this is set dynamically based on target network - prepared by rake rask
-  version build_config[:version]
+  version build_config[:pkg_version]
   description 'Elrond Services - node and proxy + tools '\
     '(3rd party package build)'
 
@@ -80,7 +80,7 @@ class Elrond < FPM::Cookery::Recipe
     puts "===> Build in #{Dir.pwd}"
     puts '===> Run Elrond install into destdir'
 
-    dest_path = "opt/#{name}-#{build_config[:version]}"
+    dest_path = "opt/#{name}-#{build_config[:pkg_version]}"
     sysd_path = 'etc/systemd/system'
 
     # create system path

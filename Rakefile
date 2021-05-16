@@ -122,23 +122,28 @@ end
 task clean: %w[clean:default]
 
 namespace :publish do
-  desc 'Add packages to local repository via repo-mgr'
-  task :default do
+  desc 'Setup publish targets'
+  task :setup do
     recipe_dir
     check_publisher
     clean_dummies
+  end
+
+  desc 'Add packages to local repository via repo-mgr'
+  task default: %w[publish:setup] do
     Dir["pkg/*.#{ENV['target']}"].each do |pkg|
       puts "===> Publish #{File.basename pkg}"
       sh "repo-mgr add-pkg --repo #{ENV['repo']} --path #{pkg}"
     end
   end
 
-  desc 'Remove published packages from local repository via repo-mgr'
-  task :undo do
-    recipe_dir
-    check_publisher
-    clean_dummies
+  desc 'Sync published packages using repo-mgr publisher'
+  task sync: %w[publish:setup publish:default] do
+    sh "repo-mgr sync --repo #{ENV['repo']}"
+  end
 
+  desc 'Remove published packages from local repository via repo-mgr'
+  task undo: %w[publish:setup] do
     Dir["pkg/*.#{ENV['target']}"].each do |pkg|
       puts "===> Unpublish #{File.basename pkg}"
       sh "repo-mgr remove-pkg --repo #{ENV['repo']} --path #{pkg}"
@@ -147,6 +152,7 @@ namespace :publish do
 end
 
 task publish: %w[publish:default]
+task lint: %i[cop]
 
 desc 'Default task - invoke build'
 task default: %w[build:default]

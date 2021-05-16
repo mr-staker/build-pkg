@@ -52,6 +52,22 @@ bundle exec rake build:docker network=test image=ubuntu:20.04 bin_version=tags/v
 bundle exec rake build:docker network=test image=oracle:8.3 bin_version=tags/v1.1.55
 ```
 
+With both custom `bin_version` and `cfg_tag`:
+
+```bash
+bundle exec rake build:docker network=test image=ubuntu:20.04 bin_version=tags/v1.1.57 cfg_tag=T1.1.57.0
+bundle exec rake build:docker network=test image=oracle:8.3 bin_version=tags/v1.1.57 cfg_tag=T1.1.57.0
+```
+
+To combine both `bin_version` and `cfg_tag`:
+
+```bash
+bundle exec rake build:docker network=test image=ubuntu:20.04 version=1.1.57
+bundle exec rake build:docker network=test image=oracle:8.3 version=1.1.57
+```
+
+This generates `bin_version=tags/v1.1.57` and `cfg_tag=T1.1.57.0` - notice the leading `T` and trailing `0` for `cfg_tag`. For mainnet the prefix is `v` and for devnet is `D`.
+
 To check if the versions match, read the generated `build.yml` file. This is how a properly formatted build config should look like:
 
 ```bash
