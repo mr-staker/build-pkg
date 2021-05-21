@@ -11,9 +11,13 @@ def abs_path
   File.expand_path __dir__
 end
 
-def check_release_network(networks)
+def networks
+  %w[main test dev]
+end
+
+def check_release_network(cmd = 'rake')
   if ENV['network'].nil?
-    warn 'ERR: Define the network env var e.g rake network=dev'
+    warn "ERR: Define the network env var e.g #{cmd} network=dev"
     Kernel.exit 1
   end
 
@@ -128,7 +132,9 @@ def gen_cfg_version
   ENV['cfg_version'] = ENV['cfg_tag'].split('/').last
 end
 
-def fetch_versions
+def fetch_versions(cmd = 'rake')
+  check_release_network cmd
+
   gen_version
   gen_bin_version
   gen_cfg_version

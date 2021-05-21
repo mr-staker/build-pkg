@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative 'lib'
+
+# extract args as env vars to mimic rake behaviour
+ARGV.each do |arg|
+  arg = arg.split '='
+  ENV[arg.first] = arg.last
+end
+
+fetch_versions $PROGRAM_NAME
+
+puts "pkg_version: #{ENV['pkg_version']}"
+puts "bin_version: #{ENV['bin_version']}"
+puts "cfg_version: #{ENV['cfg_version']}"
+puts "cfg_tag: #{ENV['cfg_tag']}"
