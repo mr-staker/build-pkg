@@ -28,6 +28,8 @@ It requires: ruby, bundler, a Docker setup capable of running volumes (preferabl
 
 ### Build pkg
 
+Ultimately, if not explicitly declared, the package version is determined based on the config version for a particular network (main, test, or dev). Unless this is overridden, the default behaviour is the upstream behaviour which may have mismatches between the config version and the "binary version" - essentially which elrond-go tag a particular config is liked to.
+
 ```bash
 # build mainnet package locally i.e Ubuntu 20.04 - requires proper go setup
 bundle exec rake build network=main
@@ -62,11 +64,11 @@ bundle exec rake build:docker network=test image=oracle:8.3 bin_version=tags/v1.
 To combine both `bin_version` and `cfg_tag`:
 
 ```bash
-bundle exec rake build:docker network=test image=ubuntu:20.04 version=1.1.57
-bundle exec rake build:docker network=test image=oracle:8.3 version=1.1.57
+bundle exec rake build:docker network=test image=ubuntu:20.04 version=1.1.57.0
+bundle exec rake build:docker network=test image=oracle:8.3 version=1.1.57.0
 ```
 
-This generates `bin_version=tags/v1.1.57` and `cfg_tag=T1.1.57.0` - notice the leading `T` and trailing `0` for `cfg_tag`. For mainnet the prefix is `v` and for devnet is `D`.
+Must point to a config version (without leading prefix). This example generates `bin_version=tags/v1.1.57` and `cfg_tag=T1.1.57.0` - notice the leading `T` for `cfg_tag`. For mainnet the prefix is `v` and for devnet is `D`. The prefix is automatically filled to avoid any mistakes.
 
 To check if the versions match, read the generated `build.yml` file. This is how a properly formatted build config should look like:
 
@@ -76,11 +78,11 @@ To check if the versions match, read the generated `build.yml` file. This is how
 :cfg_repo: elrond-config-testnet
 :bin_repo: elrond-go
 :prx_repo: elrond-proxy-go
-:version: 1.1.55
+:pkg_version: 1.1.51.1
 :network: test
-:bin_version: tags/v1.1.55
-:cfg_version: T1.1.55.0
-:cfg_tag: T1.1.55.0
+:bin_version: tags/v1.1.51
+:cfg_version: T1.1.51.1
+:cfg_tag: T1.1.51.1
 ```
 
 Pro Tip: run the `clean` and `clean:pkg` tasks between builds to ensure you start from scratch. The repositories / go modules are cached, so the data downloaded post the initial build is fairly low. To nuke everything, there's a `clean:all` task.
@@ -94,18 +96,18 @@ bundle exec rake clean clean:pkg
 Check deb pkg info:
 
 ```bash
-dpkg --info pkg/elrond-dev_1.1.37_amd64.deb
+dpkg --info pkg/elrond-test_1.1.51.1_amd64.deb
  new Debian package, version 2.0.
- size 51195768 bytes: control archive=1585 bytes.
+ size 20578920 bytes: control archive=1640 bytes.
       83 bytes,     2 lines      conffiles            
-     273 bytes,    10 lines      control              
-    3325 bytes,    37 lines      md5sums              
- Package: elrond-dev
- Version: 1.1.37
+     276 bytes,    10 lines      control
+    3537 bytes,    38 lines      md5sums
+ Package: elrond-test
+ Version: 1.1.51.1
  License: GPLv3
  Architecture: amd64
  Maintainer: hello@mr.staker.ltd
- Installed-Size: 148383
+ Installed-Size: 151031
  Section: optional
  Priority: extra
  Homepage: https://mr.staker.ltd/
@@ -115,19 +117,19 @@ dpkg --info pkg/elrond-dev_1.1.37_amd64.deb
 Check rpm pkg info:
 
 ```bash
-rpm -qip pkg/elrond-dev-1.1.37-1.x86_64.rpm
-Name        : elrond-dev
-Version     : 1.1.37
+rpm -qip pkg/elrond-test-1.1.51.1-1.x86_64.rpm
+Name        : elrond-test
+Version     : 1.1.51.1
 Release     : 1
 Architecture: x86_64
 Install Date: (not installed)
 Group       : optional
-Size        : 151939881
+Size        : 154610646
 License     : GPLv3
-Signature   : (none)
-Source RPM  : elrond-dev-1.1.37-1.src.rpm
-Build Date  : Tue 06 Apr 2021 01:41:09 BST
-Build Host  : 5366f138c072
+Signature   : RSA/SHA512, Thu 27 May 2021 16:54:54 BST, Key ID fd6652320303527f
+Source RPM  : elrond-test-1.1.51.1-1.src.rpm
+Build Date  : Thu 27 May 2021 16:53:19 BST
+Build Host  : 8a8f9e3bfed0
 Relocations : /
 Packager    : hello@mr.staker.ltd
 URL         : https://mr.staker.ltd/
@@ -156,8 +158,8 @@ Example:
 ├── lib
 │   └── libwasmer_linux_amd64.so -> /opt/elrond/lib/libwasmer_linux_amd64.so
 └── opt
-    ├── elrond -> /opt/elrond-dev-1.1.37
-    └── elrond-dev-1.1.37
+    ├── elrond -> /opt/elrond-test-1.1.51.1
+    └── elrond-test-1.1.51.1
         ├── bin
         │   ├── arwen
         │   ├── keygenerator
@@ -173,6 +175,8 @@ Example:
         │       │       ├── api.toml
         │       │       ├── binaryVersion
         │       │       ├── config.toml
+        │       │       ├── docker
+        │       │       │   └── Dockerfile
         │       │       ├── economics.toml
         │       │       ├── external.toml
         │       │       ├── gasSchedules
@@ -190,6 +194,8 @@ Example:
         │       │       ├── prefs.toml
         │       │       ├── ratings.toml
         │       │       ├── README.md
+        │       │       ├── scripts
+        │       │       │   └── run-observer.sh
         │       │       └── systemSmartContractsConfig.toml
         │       └── proxy
         │           └── config
@@ -199,8 +205,7 @@ Example:
         │               │   └── v_next.toml
         │               ├── config.toml
         │               ├── economics.toml
-        │               ├── external.toml
-        │               └── walletKey.pem
+        │               └── external.toml
         └── lib
             └── libwasmer_linux_amd64.so
 ```

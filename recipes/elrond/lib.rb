@@ -94,8 +94,8 @@ def gen_version
     'dev' => 'D'
   }
 
-  ENV['bin_version'] = "tags/v#{ENV['version']}"
-  ENV['cfg_tag'] = "#{pref[ENV['network']]}#{ENV['version']}.0"
+  ENV['bin_version'] = "tags/v#{ENV['version'][0..-3]}"
+  ENV['cfg_tag'] = "#{pref[ENV['network']]}#{ENV['version']}"
 end
 
 # rubocop:disable Metrics/MethodLength
