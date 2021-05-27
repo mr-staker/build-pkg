@@ -114,8 +114,6 @@ def gen_bin_version
     res = get_url bin_url
     ENV['bin_version'] = res.strip
   end
-
-  ENV['pkg_version'] = ENV['bin_version'].split('/').last.gsub(/[^.\d]/, '')
 end
 # rubocop:enable Metrics/MethodLength
 
@@ -130,6 +128,8 @@ def gen_cfg_version
   end
 
   ENV['cfg_version'] = ENV['cfg_tag'].split('/').last
+
+  ENV['pkg_version'] = ENV['cfg_version'][1..-1]
 end
 
 def fetch_versions(cmd = 'rake')
