@@ -98,46 +98,72 @@ def gen_version
   ENV['cfg_tag'] = "#{pref[ENV['network']]}#{ENV['version']}"
 end
 
-# rubocop:disable Metrics/MethodLength
-def gen_bin_version
-  if ENV['bin_version'].nil?
-    network_branch = {
-      'main' => 'master',
-      'test' => 'master',
-      'dev' => 'main'
-    }
+def tag_sha
+  # fetch tag info
+  tag_url = 'https://api.github.com/repos/ElrondNetwork/elrond-config-'\
+    "#{ENV['network']}net/git/ref/tags/#{ENV['cfg_tag']}"
+  tag = get_url tag_url
 
-    # taking the binaryVersion as the source of truth for pkg version
-    bin_url = 'https://raw.githubusercontent.com/ElrondNetwork/elrond-config-'\
-      "#{ENV['network']}net/#{network_branch[ENV['network']]}/binaryVersion"
-
-    res = get_url bin_url
-    ENV['bin_version'] = res.strip
-  end
+  ENV['cfg_sha'] = JSON.parse(tag)['object']['sha']
 end
-# rubocop:enable Metrics/MethodLength
 
 def gen_cfg_version
   if ENV['cfg_tag'].nil?
     # get configuration git tag/version
     cfg_url = 'https://api.github.com/repos/ElrondNetwork/elrond-config-'\
       "#{ENV['network']}net/releases/latest"
-    res = get_url cfg_url
+    cfg = get_url cfg_url
 
-    ENV['cfg_tag'] = JSON.parse(res)['tag_name']
+    ENV['cfg_tag'] = JSON.parse(cfg)['tag_name']
+    tag_sha
   end
 
   ENV['cfg_version'] = ENV['cfg_tag'].split('/').last
-
   ENV['pkg_version'] = ENV['cfg_version'][1..-1]
+end
+
+def network_branch
+  {
+    'main' => 'master',
+    'test' => 'master',
+    'dev' => 'main'
+  }
+end
+
+# rubocop:disable Metrics/MethodLength
+def bin_url
+  # taking the binaryVersion as the source of truth for pkg version
+  if ENV['cfg_sha']
+    # bust cache - read from commit URL
+    url = 'https://raw.githubusercontent.com/ElrondNetwork/'\
+      "elrond-config-#{ENV['network']}net/#{ENV['cfg_sha']}/binaryVersion"
+  else
+    url = 'https://raw.githubusercontent.com/ElrondNetwork/elrond-config-'\
+      "#{ENV['network']}net/#{network_branch[ENV['network']]}/binaryVersion"
+
+    warn ''
+    warn 'WARNING: no cfg_sha env var - using default binaryVersion URL.'
+    warn 'WARNING: This may be cached by GitHub!'
+    warn ''
+  end
+
+  url
+end
+# rubocop:enable Metrics/MethodLength
+
+def gen_bin_version
+  return unless ENV['bin_version'].nil?
+
+  res = get_url bin_url
+  ENV['bin_version'] = res.strip
 end
 
 def fetch_versions(cmd = 'rake')
   check_release_network cmd
 
   gen_version
-  gen_bin_version
   gen_cfg_version
+  gen_bin_version
 end
 
 # rubocop:disable Metrics/MethodLength
