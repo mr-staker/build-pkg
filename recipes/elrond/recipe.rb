@@ -13,7 +13,9 @@ class Elrond < FPM::Cookery::Recipe
   # this is the dummy file hash to make fpm-cook shut up about pkg source
   sha256 '73462d8e7fb2b65a354d365f607b6c7bbd2ef10dd17fe68d4a9aa8a66ebce8d3'
 
-  name "elrond-#{build_config[:network]}"
+  name pkg_name
+  conflicts pkg_conflicts
+
   # this is set dynamically based on target network - prepared by rake rask
   version build_config[:pkg_version]
   description 'Elrond Services - node and proxy + tools '\
@@ -53,7 +55,7 @@ class Elrond < FPM::Cookery::Recipe
 
         sh 'GO111MODULE=on go mod vendor'
 
-        go_build 'node', 'cmd/node', "-i -v -ldflags='-X main.appVersion="\
+        go_build 'node', 'cmd/node', "-v -ldflags='-X main.appVersion="\
           "#{build_config[:cfg_version]}-0-#{tag_id}'"
         go_build 'arwen', '.', '-o ./arwen github.com/ElrondNetwork/'\
           'arwen-wasm-vm/cmd/arwen'
@@ -61,6 +63,7 @@ class Elrond < FPM::Cookery::Recipe
         go_build 'logviewer', 'cmd/logviewer'
         go_build 'seednode', 'cmd/seednode'
         go_build 'keygenerator', 'cmd/keygenerator'
+        go_build 'assessment', 'cmd/assessment'
       end
 
       Dir.chdir build_config[:prx_repo] do
@@ -110,6 +113,7 @@ class Elrond < FPM::Cookery::Recipe
       cmd/logviewer/logviewer
       cmd/seednode/seednode
       cmd/keygenerator/keygenerator
+      cmd/assessment/assessment
     ].each do |bin_path|
       install_bin build_config[:bin_repo], bin_path, bin_dir
     end
@@ -149,6 +153,12 @@ class Elrond < FPM::Cookery::Recipe
     cp_r(
       builddir("#{build_config[:prx_repo]}/cmd/proxy/config"),
       destdir("#{etc_dir}/elrond/proxy/config")
+    )
+
+    # copy assessment testdata
+    cp_r(
+      builddir("#{build_config[:bin_repo]}/cmd/assessment/testdata"),
+      destdir("#{etc_dir}/elrond/testdata")
     )
   end
   # rubocop:enable Metrics/MethodLength

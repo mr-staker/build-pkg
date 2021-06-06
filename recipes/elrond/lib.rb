@@ -15,6 +15,30 @@ def networks
   %w[main test dev]
 end
 
+def network_branch
+  {
+    'main' => 'master',
+    'test' => 'master',
+    'dev' => 'main'
+  }
+end
+
+def network_prefix
+  {
+    'main' => 'v',
+    'test' => 'T',
+    'dev' => 'D'
+  }
+end
+
+def pkg_name
+  "elrond-#{build_config[:network]}"
+end
+
+def pkg_conflicts
+  (networks - [build_config[:network]]).map { |net| "elrond-#{net}" }
+end
+
 def check_release_network(cmd = 'rake')
   if ENV['network'].nil?
     warn "ERR: Define the network env var e.g #{cmd} network=dev"
@@ -88,14 +112,8 @@ end
 def gen_version
   return unless ENV['version']
 
-  pref = {
-    'main' => 'v',
-    'test' => 'T',
-    'dev' => 'D'
-  }
-
   ENV['bin_version'] = "tags/v#{ENV['version'][0..-3]}"
-  ENV['cfg_tag'] = "#{pref[ENV['network']]}#{ENV['version']}"
+  ENV['cfg_tag'] = "#{network_prefix[ENV['network']]}#{ENV['version']}"
 end
 
 def tag_sha
@@ -120,14 +138,6 @@ def gen_cfg_version
 
   ENV['cfg_version'] = ENV['cfg_tag'].split('/').last
   ENV['pkg_version'] = ENV['cfg_version'][1..-1]
-end
-
-def network_branch
-  {
-    'main' => 'master',
-    'test' => 'master',
-    'dev' => 'main'
-  }
 end
 
 # rubocop:disable Metrics/MethodLength
