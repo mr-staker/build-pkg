@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'erb'
 require 'git'
 require 'json'
 require 'yaml'
@@ -224,3 +225,13 @@ def git_sync
 end
 # rubocop:enable Metrics/MethodLength
 # rubocop:enable Metrics/AbcSize
+
+def arwen?
+  # (ab)using Gem::Version to do a general version comparison to determine
+  # whether to build arwen or not
+  Gem::Version.new(build_config[:pkg_version]) < Gem::Version.new('1.1.60.0')
+end
+
+def file_template(file, vars)
+  ERB.new(File.read(file), nil, '-').result_with_hash(vars)
+end
