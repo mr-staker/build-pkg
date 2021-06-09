@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative 'lib'
+
+extract_args
+clean
+buidl 'oracle:8.3'
+clean
+buidl 'ubuntu:20.04'

@@ -3,12 +3,7 @@
 
 require_relative 'lib'
 
-# extract args as env vars to mimic rake behaviour
-ARGV.each do |arg|
-  arg = arg.split '='
-  ENV[arg.first] = arg.last
-end
-
+extract_args
 fetch_versions $PROGRAM_NAME
 
 puts "pkg_version: #{ENV['pkg_version']}"

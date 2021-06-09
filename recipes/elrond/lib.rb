@@ -235,3 +235,30 @@ end
 def file_template(file, vars)
   ERB.new(File.read(file), nil, '-').result_with_hash(vars)
 end
+
+# extract args as env vars to mimic rake behaviour
+def extract_args
+  ARGV.each do |arg|
+    arg = arg.split '='
+    ENV[arg.first] = arg.last
+  end
+end
+
+def buidl_cmd_append(arg)
+  return "#{arg}=#{ENV['arg']}" if ENV[arg]
+
+  ''
+end
+
+def clean
+  Kernel.system 'rake clean'
+end
+
+def buidl(img)
+  buidl_cmd = "rake build:docker image=#{img} network=#{ENV['network']}"
+  %w[version bin_version cfg_tag].each { |arg| buidl_cmd_append arg }
+
+  status = Kernel.system buidl_cmd
+
+  Kernel.exit 1 unless status
+end
