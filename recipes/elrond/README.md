@@ -85,6 +85,14 @@ To check if the versions match, read the generated `build.yml` file. This is how
 :cfg_tag: T1.1.51.1
 ```
 
+To disable arwen from a build (only used on testnet so far):
+
+```bash
+bundle exec rake build:docker network=test image=ubuntu:20.04 arwen=false
+bundle exec rake build:docker network=test image=oracle:8.3 arwen=false
+```
+
+
 Pro Tip: run the `clean` and `clean:pkg` tasks between builds to ensure you start from scratch. The repositories / go modules are cached, so the data downloaded post the initial build is fairly low. To nuke everything, there's a `clean:all` task.
 
 ```bash

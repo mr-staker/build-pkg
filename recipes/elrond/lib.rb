@@ -185,6 +185,9 @@ def setup_environment
 
   ENV['GOPATH'] = "#{abs_path}/go"
 
+  arwen = true
+  arwen = false if ENV['arwen'] == 'false'
+
   # this is necessary as the environment variables are not passed down to
   # a docker container when the pkg build happens in a container
   # therefore, they must be persistent and mounted as volume
@@ -197,7 +200,8 @@ def setup_environment
     network: ENV['network'],
     bin_version: ENV['bin_version'],
     cfg_version: ENV['cfg_version'],
-    cfg_tag: ENV['cfg_tag']
+    cfg_tag: ENV['cfg_tag'],
+    arwen: arwen
   }
 
   File.write('build.yml', build_config.to_yaml)
@@ -227,9 +231,7 @@ end
 # rubocop:enable Metrics/AbcSize
 
 def arwen?
-  # (ab)using Gem::Version to do a general version comparison to determine
-  # whether to build arwen or not
-  Gem::Version.new(build_config[:pkg_version]) < Gem::Version.new('1.1.60.0')
+  build_config[:arwen]
 end
 
 def file_template(file, vars)
