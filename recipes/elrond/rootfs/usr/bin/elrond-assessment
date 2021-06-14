@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cp -r /opt/elrond/etc/elrond/testdata .
+/opt/elrond/bin/assessment
+rm -rf testdata

@@ -60,8 +60,9 @@ class Elrond < FPM::Cookery::Recipe
           "#{build_config[:cfg_version]}-0-#{tag_id}'"
 
         if arwen?
-          go_build 'arwen', '.', '-o ./arwen github.com/ElrondNetwork/'\
-            'arwen-wasm-vm/cmd/arwen'
+          ENV['ARWEN_PATH'] = "#{ENV['GOPATH']}/src/github.com/ElrondNetwork"\
+            '/elrond-go/cmd/node/arwen'
+          make 'arwen'
         end
 
         go_build 'termui', 'cmd/termui'
@@ -120,10 +121,13 @@ class Elrond < FPM::Cookery::Recipe
       cmd/assessment/assessment
     ]
 
-    binaries << 'arwen' if arwen?
-
     binaries.each do |bin_path|
       install_bin build_config[:bin_repo], bin_path, bin_dir
+    end
+
+    if arwen?
+      cp "#{ENV['GOPATH']}/src/github.com/ElrondNetwork"\
+        '/elrond-go/cmd/node/arwen', destdir(bin_dir)
     end
 
     # copy Elrond proxy
@@ -173,6 +177,12 @@ class Elrond < FPM::Cookery::Recipe
       builddir("#{build_config[:bin_repo]}/cmd/assessment/testdata"),
       destdir("#{etc_dir}/elrond/testdata")
     )
+
+    # add assessment wrapper for easy invoke
+    Dir.chdir workdir do
+      mkdir_p destdir('usr/bin')
+      cp 'rootfs/usr/bin/elrond-assessment', destdir('usr/bin')
+    end
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
