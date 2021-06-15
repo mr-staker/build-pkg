@@ -1,0 +1,16 @@
+#!/bin/bash
+
+if [ -f /usr/bin/apt ]
+then
+  apt install -y /build/pkg/*.deb
+  exit $?
+fi
+
+if [ -f /usr/bin/dnf ]
+then
+  dnf install -y /build/pkg/*.rpm
+  exit $?
+fi
+
+>&2 echo 'Error: no installer available'
+exit 1

@@ -5,8 +5,11 @@ require 'git'
 require 'json'
 require 'yaml'
 require 'faraday'
+require 'rake/file_utils_ext'
 
 require_relative 'patch'
+
+include Rake::FileUtilsExt
 
 def abs_path
   File.expand_path __dir__
@@ -260,7 +263,5 @@ def buidl(img)
   buidl_cmd = "rake build:docker image=#{img} network=#{ENV['network']}"
   %w[version bin_version cfg_tag].each { |arg| buidl_cmd_append arg }
 
-  status = Kernel.system buidl_cmd
-
-  Kernel.exit 1 unless status
+  sh buidl_cmd
 end

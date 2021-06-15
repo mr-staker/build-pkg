@@ -151,6 +151,58 @@ namespace :publish do
   end
 end
 
+namespace :test do
+  task :init do
+    if ENV['image'].nil?
+      warn 'ERR: a Docker image must be specified'
+      Kernel.exit 1
+    end
+
+    @container = "build-#{File.basename(Dir.pwd)}-#{ENV['image'].tr(':', '-')}"
+    @image = "local/build-pkg/#{ENV['image']}"
+  end
+
+  desc 'Setup test environment'
+  task setup: %w[test:init] do
+    recipe_dir
+
+    sh "docker rm -f #{@container}"
+    sh "docker run --volume #{Dir.pwd}:/build --name #{@container} "\
+      "--detach #{@image} tail -f /dev/null"
+  end
+
+  desc 'Install package in container'
+  task install: %w[test:init] do
+    recipe_dir
+
+    sh "docker exec #{@container} /build/installer"
+  end
+
+  desc 'Run test suite for recipe'
+  task run: %w[test:init] do
+    recipe_dir
+
+    unless Dir.exist? 'spec'
+      warn 'The spec dir is missing - unable to run tests'
+      Kernel.exit 1
+    end
+
+    sh "docker exec #{@container} /build/tester"
+  end
+
+  desc 'Tear down test environment'
+  task clean: %w[test:init] do
+    recipe_dir
+
+    sh "docker rm -f #{@container}"
+  end
+
+  desc 'Run recipe specific test suite'
+  task default: %w[test:setup test:install test:run test:clean]
+end
+
+task test: %w[test:default]
+
 task publish: %w[publish:default]
 task lint: %i[cop]
 
