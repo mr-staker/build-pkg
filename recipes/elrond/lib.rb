@@ -100,12 +100,16 @@ def go_build(name, path, args = nil)
   end
 end
 
+def bin_strip(bin)
+  sh "strip --strip-unneeded #{bin}"
+end
+
 def install_bin(repo, bin_path, bin_dir, options = {})
   cp builddir("#{repo}/#{bin_path}"), destdir(bin_dir)
 
   return if options[:strip] == false
 
-  sh "strip --strip-unneeded #{destdir(bin_dir)}/#{File.basename(bin_path)}"
+  bin_strip "#{destdir(bin_dir)}/#{File.basename(bin_path)}"
 end
 
 def build_config

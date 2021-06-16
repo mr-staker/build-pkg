@@ -128,6 +128,8 @@ class Elrond < FPM::Cookery::Recipe
     if arwen?
       cp "#{ENV['GOPATH']}/src/github.com/ElrondNetwork"\
         '/elrond-go/cmd/node/arwen', destdir(bin_dir)
+
+      bin_strip "#{destdir(bin_dir)}/arwen"
     end
 
     # copy Elrond proxy
