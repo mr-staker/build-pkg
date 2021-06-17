@@ -11,6 +11,13 @@ describe 'elrond' do
     FileUtils.rm_f 'validatorKey.pem'
   end
 
+  Dir['/build/pkg/*'].each do |pkg|
+    describe file(pkg) do
+      # this is a hard limit for CF Pages
+      its(:size) { should < 26214400 }
+    end
+  end
+
   describe package("elrond-#{build_config[:network]}") do
     it { should be_installed }
   end
