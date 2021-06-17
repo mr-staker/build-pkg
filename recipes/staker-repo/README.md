@@ -10,5 +10,5 @@ The versioning scheme is YY.MM.VV where YY is the year expressed as the last 2 d
 
 ```bash
 bundle exec rake docker:build image=ubuntu:20.04
-bundle exec rake docker:build image=oracle:8.3
+bundle exec rake docker:build image=oracle:8.4
 ```

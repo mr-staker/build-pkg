@@ -1,6 +1,9 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
+oracle = 'oracle:8.4'
+ubuntu = 'ubuntu:20.04'
+
 require 'rake/file_utils_ext'
 require_relative 'lib'
 
@@ -10,9 +13,9 @@ extract_args
 setup_environment
 
 clean
-buidl 'oracle:8.3'
-sh 'rake test image=oracle:8.3'
+buidl oracle
+sh "rake test image=#{oracle}"
 
 clean
-buidl 'ubuntu:20.04'
-sh 'rake test image=ubuntu:20.04'
+buidl ubuntu
+sh "rake test image=#{ubuntu}"
