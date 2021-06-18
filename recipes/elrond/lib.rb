@@ -260,7 +260,11 @@ def buidl_cmd_append(arg)
 end
 
 def clean
-  Kernel.system 'rake clean'
+  sh 'rake clean'
+end
+
+def clean_pkg
+  sh 'rake clean:pkg'
 end
 
 def buidl(img)
@@ -268,4 +272,8 @@ def buidl(img)
   %w[version bin_version cfg_tag].each { |arg| buidl_cmd_append arg }
 
   sh buidl_cmd
+end
+
+def test_suite(image)
+  sh "rake test image=#{image}"
 end

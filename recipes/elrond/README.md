@@ -31,6 +31,9 @@ It requires: ruby, bundler, a Docker setup capable of running volumes (preferabl
 Ultimately, if not explicitly declared, the package version is determined based on the config version for a particular network (main, test, or dev). Unless this is overridden, the default behaviour is the upstream behaviour which may have mismatches between the config version and the "binary version" - essentially which elrond-go tag a particular config is liked to.
 
 ```bash
+# build everything for target network - accepts all detailed args (except image)
+./buidl network=test
+
 # build mainnet package locally i.e Ubuntu 20.04 - requires proper go setup
 bundle exec rake build network=main
 

@@ -11,11 +11,12 @@ include Rake::FileUtilsExt
 
 extract_args
 setup_environment
+clean_pkg
 
 clean
 buidl oracle
-sh "rake test image=#{oracle}"
+test_suite oracle
 
 clean
 buidl ubuntu
-sh "rake test image=#{ubuntu}"
+test_suite ubuntu
