@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'patch'
 require_relative 'metadata'
 
 # OpenZFS build wrapper

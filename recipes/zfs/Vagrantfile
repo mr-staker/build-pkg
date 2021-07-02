@@ -5,6 +5,12 @@ require_relative 'metadata'
 Vagrant.configure('2') do |config|
   config.vm.box = 'generic/oracle8'
   config.vm.synced_folder '.', '/recipe'
+
+  config.vm.provider :virtualbox do |vb|
+    vb.customize ['modifyvm', :id, '--cpus', 1]
+    vb.customize ['modifyvm', :id, '--memory', 4096]
+  end
+
   config.vm.provision 'shell', inline: <<~SCRIPT
     dnf -y install oracle-epel-release-el8
 

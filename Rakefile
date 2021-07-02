@@ -72,7 +72,7 @@ namespace :build do
     sh 'vagrant up'
 
     build = 'cd /recipe && /opt/cinc/embedded/bin/fpm-cook package --no-deps'
-    sh %(vagrant ssh -c 'sudo su - -c "#{build}"')
+    sh "vagrant ssh -c '#{build}'"
   end
 end
 # rubocop:enable Metrics/BlockLength
@@ -151,6 +151,7 @@ namespace :publish do
   end
 end
 
+# rubocop:disable Metrics/BlockLength
 namespace :test do
   task :init do
     if ENV['image'].nil?
@@ -200,6 +201,7 @@ namespace :test do
   desc 'Run recipe specific test suite'
   task default: %w[test:setup test:install test:run test:clean]
 end
+# rubocop:enable Metrics/BlockLength
 
 task test: %w[test:default]
 

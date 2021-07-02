@@ -16,3 +16,9 @@ sudo apt install build-essential autoconf automake libtool gawk alien fakeroot d
 bundle exec rake build # deb
 bundle exec rake build:vagrant # rpm
 ```
+
+Pro tip: Clean the project in between the builds (won't touch build artefacts).
+
+```bash
+bundle exec rake clean
+```
