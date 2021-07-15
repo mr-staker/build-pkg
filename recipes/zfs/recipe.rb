@@ -19,17 +19,17 @@ class Zfs < FPM::Cookery::Recipe
   # rubocop:disable Metrics/MethodLength
   def deb_dependency_map
     {
-      'python3-pyzfs' => %w[libzfs4 python3 staker-repo],
+      'python3-pyzfs' => %w[libzfs5 python3 staker-repo],
       'zfs-dracut' => %w[zfs zfs-dkms staker-repo],
       'zfs-initramfs' => %w[zfs zfs-dkms staker-repo],
-      'zfs' => %w[zfs-dkms libnvpair3 libuutil3 libzfs4 libzpool4 staker-repo],
-      'libzfs4-devel' => %w[libzfs4 staker-repo],
+      'zfs' => %w[zfs-dkms libnvpair3 libuutil3 libzfs5 libzpool5 staker-repo],
+      'libzfs5-devel' => %w[libzfs5 staker-repo],
       'libuutil3' => %w[libc6 staker-repo],
-      'libzfs4' => %w[
+      'libzfs5' => %w[
         libssl1.1 zlib1g libuuid1 libblkid1 libudev1 libc6 zfs-dkms staker-repo
       ],
-      'libzpool4' => %w[
-        libc6 libzfs4 libnvpair3 libuuid1 libblkid1 libudev1 staker-repo
+      'libzpool5' => %w[
+        libc6 libzfs5 libnvpair3 libuuid1 libblkid1 libudev1 staker-repo
       ],
       'libnvpair3' => %w[libc6 staker-repo],
       'zfs-dkms' => %w[dkms staker-repo]
@@ -73,8 +73,8 @@ class Zfs < FPM::Cookery::Recipe
     File.write macros_file, "%_buildhost mr.staker.ltd\n"
 
     skip_pkg = %w[
-      zfs-test zfs-test-debuginfo libzpool4-debuginfo libuutil3-debuginfo
-      zfs-debuginfo libnvpair3-debuginfo libzfs4-debuginfo zfs-debugsource
+      zfs-test zfs-test-debuginfo libzpool5-debuginfo libuutil3-debuginfo
+      zfs-debuginfo libnvpair3-debuginfo libzfs5-debuginfo zfs-debugsource
     ]
 
     # rubocop:disable Metrics/BlockLength
