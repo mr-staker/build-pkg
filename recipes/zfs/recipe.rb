@@ -42,6 +42,11 @@ class Zfs < FPM::Cookery::Recipe
     macros_file = "#{ENV['HOME']}/.rpmmacros"
     File.write macros_file, "%_buildhost mr.staker.ltd\n"
 
+    # slim tests to avoid zfs-dkms growing too big and going over
+    # the Cloudflare Pages limit of 25 MiB per file
+    patch workdir('patches/disable-tests.patch'), 1
+    sh './autogen.sh'
+
     # for Red Hat and derivatives, this should have happen in Docker, but
     # ending up with a corrupted rpmdb
     # https://github.com/openzfs/zfs/issues/7727

@@ -29,6 +29,7 @@ class Elrond < FPM::Cookery::Recipe
 
   maintainer 'hello@mr.staker.ltd'
   license 'GPLv3'
+  depends %w[staker-repo]
 
   fpm_attributes({ deb_compression: 'xz', rpm_compression: 'xz' })
 
