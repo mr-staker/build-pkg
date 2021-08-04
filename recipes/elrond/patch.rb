@@ -59,7 +59,7 @@ module FPM
           '-v', "#{recipe_dir}:/recipe",
           '-w', '/recipe',
           image_name,
-          'fpm-cook', 'package',
+          'fpm-cook', 'package', '--no-deps',
           config.debug ? '-D' : nil,
           File.basename(recipe.filename)
         ].compact.flatten.join(' ')
