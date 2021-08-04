@@ -138,10 +138,10 @@ class Elrond < FPM::Cookery::Recipe
 
     # copy libwasmer - for the time being, only Linux/amd64 is supported
     lib_file = 'libwasmer_linux_amd64.so'
-    lib_path = 'vendor/github.com/ElrondNetwork/arwen-wasm-vm/wasmer/'\
-      "#{lib_file}"
-    # object stripping is unreliable on Ubuntu 18.04
-    install_bin build_config[:bin_repo], lib_path, lib_dir, strip: false
+    lib_version = wasmer_version builddir("#{build_config[:bin_repo]}/go.mod")
+    lib_path = "#{ENV['GOPATH']}/pkg/mod/github.com/\!elrond\!network/"\
+      "arwen-wasm-vm@#{lib_version}/wasmer/#{lib_file}"
+    cp lib_path, destdir(lib_dir)
 
     # link into /lib as ldconfig behaves weirdly under Ubuntu 18.04
     # this avoids messing with ldconfig

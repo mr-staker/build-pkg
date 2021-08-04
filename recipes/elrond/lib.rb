@@ -277,3 +277,7 @@ end
 def test_suite(image)
   sh "rake test image=#{image}"
 end
+
+def wasmer_version(go_mod)
+  File.open(go_mod).grep(/arwen/).last.split(' ').last
+end
