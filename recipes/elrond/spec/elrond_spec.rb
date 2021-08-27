@@ -38,10 +38,10 @@ describe 'elrond' do
      its(:content) { should match /-----END PRIVATE KEY for / }
   end
 
-  describe file('/usr/bin/elrond-assessment') do
-    it { should be_file }
-    it { should be_mode '755' }
-  end
+  # describe file('/usr/bin/elrond-assessment') do
+  #   it { should be_file }
+  #   it { should be_mode '755' }
+  # end
 
   after(:all) do
     FileUtils.rm_f 'validatorKey.pem'
