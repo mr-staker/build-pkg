@@ -119,8 +119,10 @@ class Elrond < FPM::Cookery::Recipe
       cmd/logviewer/logviewer
       cmd/seednode/seednode
       cmd/keygenerator/keygenerator
-      cmd/assessment/assessment
     ]
+    # disable assessment to keep under 25 MiB limit
+    # cmd/assessment/assessment
+
 
     binaries.each do |bin_path|
       install_bin build_config[:bin_repo], bin_path, bin_dir
@@ -176,16 +178,16 @@ class Elrond < FPM::Cookery::Recipe
     )
 
     # copy assessment testdata
-    cp_r(
-      builddir("#{build_config[:bin_repo]}/cmd/assessment/testdata"),
-      destdir("#{etc_dir}/elrond/testdata")
-    )
+    # cp_r(
+    #   builddir("#{build_config[:bin_repo]}/cmd/assessment/testdata"),
+    #   destdir("#{etc_dir}/elrond/testdata")
+    # )
 
     # add assessment wrapper for easy invoke
-    Dir.chdir workdir do
-      mkdir_p destdir('usr/bin')
-      cp 'rootfs/usr/bin/elrond-assessment', destdir('usr/bin')
-    end
+    # Dir.chdir workdir do
+    #   mkdir_p destdir('usr/bin')
+    #   cp 'rootfs/usr/bin/elrond-assessment', destdir('usr/bin')
+    # end
   end
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
