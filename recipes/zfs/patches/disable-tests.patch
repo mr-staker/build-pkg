@@ -1,5 +1,5 @@
 diff --git a/Makefile.am b/Makefile.am
-index 4e7e29589..4f6f2f9c8 100644
+index 060729642..d5e488b55 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -8,7 +8,7 @@ SUBDIRS += rpm
@@ -21,10 +21,10 @@ index 4e7e29589..4f6f2f9c8 100644
  
  PHONY += checkabi storeabi
 diff --git a/configure.ac b/configure.ac
-index 27409c82f..f7f10f49d 100644
+index 6f34b210d..f7f10f49d 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -194,219 +194,6 @@ AC_CONFIG_FILES([
+@@ -194,220 +194,6 @@ AC_CONFIG_FILES([
  	rpm/redhat/zfs-kmod.spec
  	rpm/redhat/zfs.spec
  	scripts/Makefile
@@ -161,6 +161,7 @@ index 27409c82f..f7f10f49d 100644
 -	tests/zfs-tests/tests/functional/cli_user/zpool_status/Makefile
 -	tests/zfs-tests/tests/functional/compression/Makefile
 -	tests/zfs-tests/tests/functional/cp_files/Makefile
+-	tests/zfs-tests/tests/functional/crtime/Makefile
 -	tests/zfs-tests/tests/functional/ctime/Makefile
 -	tests/zfs-tests/tests/functional/deadman/Makefile
 -	tests/zfs-tests/tests/functional/delegate/Makefile

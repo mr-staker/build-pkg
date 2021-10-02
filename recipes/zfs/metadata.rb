@@ -2,8 +2,8 @@
 
 def build_config
   {
-    version: '2.1.0',
-    sha256: '60bddcb630284c771dcf5a1109ca9329d16523a3a40a374019955cfbf97bf34f',
+    version: '2.1.1',
+    sha256: 'bd4f48d009f3b5e291390bde62b0131b8bf3fab09f4fc0fa3591b1f2e7074cff',
     homepage: 'https://github.com/openzfs/zfs',
     maintainer: 'hello@mr.staker.ltd',
     license: 'CDDL',
