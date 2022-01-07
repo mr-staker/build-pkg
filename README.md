@@ -13,7 +13,7 @@ eval "$(cinc shell-init zsh)" # or bash if you use it
 # Docker for Windows/Mac is recommended for those platforms - jump to docker info
 # Bear in mind that Docker for Windows/Mac requires your code directory to be shared with the Docker VM
 # Docker setup - Ubuntu 20.04
-sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release
+sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release build-essential
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update
