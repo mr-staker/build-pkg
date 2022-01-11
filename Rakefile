@@ -61,7 +61,7 @@ namespace :build do
       Kernel.exit 1
     end
 
-    sh "bundle exec fpm-cook package --no-deps --docker "\
+    sh 'bundle exec fpm-cook package --no-deps --docker '\
       "--dockerfile #{dockerfile} "\
       "--docker-image #{docker_img_prefix}/#{ENV['image']}"
   end
