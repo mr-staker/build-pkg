@@ -135,6 +135,7 @@ PLATFORMS
 DEPENDENCIES
   faraday
   fpm-cookery
+  git
   rake
   rubocop
   serverspec (= 2.41.5)
