@@ -5,7 +5,6 @@ require_relative 'lib'
 setup_environment unless ARGV.first == 'clean'
 
 # fpm-cookery recipe for building elrond-node native packages
-# rubocop:disable Metrics/ClassLength
 class Elrond < FPM::Cookery::Recipe
   homepage 'https://mr.staker.ltd/'
 
@@ -59,12 +58,6 @@ class Elrond < FPM::Cookery::Recipe
 
         go_build 'node', 'cmd/node', "-v -ldflags='-X main.appVersion="\
           "#{build_config[:cfg_version]}-0-#{tag_id}'"
-
-        if arwen?
-          ENV['ARWEN_PATH'] = "#{ENV['GOPATH']}/src/github.com/ElrondNetwork"\
-            '/elrond-go/cmd/node/arwen'
-          make 'arwen'
-        end
 
         go_build 'termui', 'cmd/termui'
         go_build 'logviewer', 'cmd/logviewer'
@@ -123,16 +116,8 @@ class Elrond < FPM::Cookery::Recipe
     # disable assessment to keep under 25 MiB limit
     # cmd/assessment/assessment
 
-
     binaries.each do |bin_path|
       install_bin build_config[:bin_repo], bin_path, bin_dir
-    end
-
-    if arwen?
-      cp "#{ENV['GOPATH']}/src/github.com/ElrondNetwork"\
-        '/elrond-go/cmd/node/arwen', destdir(bin_dir)
-
-      bin_strip "#{destdir(bin_dir)}/arwen"
     end
 
     # copy Elrond proxy
@@ -156,11 +141,7 @@ class Elrond < FPM::Cookery::Recipe
     Dir.chdir workdir do
       puts "===> Build in #{Dir.pwd}"
 
-      elrond_node_svc = file_template(
-        "rootfs/#{sysd_path}/elrond-node@.service", arwen: arwen?
-      )
-      File.write(destdir("#{sysd_path}/elrond-node@.service"), elrond_node_svc)
-
+      cp "rootfs/#{sysd_path}/elrond-node@.service", destdir(sysd_path)
       cp "rootfs/#{sysd_path}/elrond-proxy@.service", destdir(sysd_path)
     end
 
@@ -192,4 +173,3 @@ class Elrond < FPM::Cookery::Recipe
   # rubocop:enable Metrics/MethodLength
   # rubocop:enable Metrics/AbcSize
 end
-# rubocop:enable Metrics/ClassLength

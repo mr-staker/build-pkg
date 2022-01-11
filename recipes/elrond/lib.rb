@@ -9,7 +9,9 @@ require 'rake/file_utils_ext'
 
 require_relative 'patch'
 
+# rubocop:disable Style/MixinUsage
 include Rake::FileUtilsExt
+# rubocop:enable Style/MixinUsage
 
 def abs_path
   File.expand_path __dir__
@@ -241,10 +243,6 @@ def arwen?
   build_config[:arwen]
 end
 
-def file_template(file, vars)
-  ERB.new(File.read(file), nil, '-').result_with_hash(vars)
-end
-
 # extract args as env vars to mimic rake behaviour
 def extract_args
   ARGV.each do |arg|
@@ -279,5 +277,5 @@ def test_suite(image)
 end
 
 def wasmer_version(go_mod)
-  File.open(go_mod).grep(/arwen/).last.split(' ').last
+  File.open(go_mod).grep(/arwen/).last.split.last
 end

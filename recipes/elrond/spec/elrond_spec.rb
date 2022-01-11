@@ -6,16 +6,18 @@ require 'fileutils'
 require_relative '../lib'
 require_relative 'spec_helper'
 
-describe 'elrond' do
-  before(:all) do
-    FileUtils.rm_f 'validatorKey.pem'
-  end
-
+describe 'pkg_test' do
   Dir['/build/pkg/*'].each do |pkg|
     describe file(pkg) do
       # this is a hard limit for CF Pages
-      its(:size) { should < 26214400 }
+      its(:size) { should < 26_214_400 }
     end
+  end
+end
+
+describe 'elrond' do
+  before(:all) do
+    FileUtils.rm_f 'validatorKey.pem'
   end
 
   describe package("elrond-#{build_config[:network]}") do
@@ -23,19 +25,19 @@ describe 'elrond' do
   end
 
   describe command('/opt/elrond/bin/node -v') do
-    its(:stdout) { should match /Elrond Node CLI App/ }
+    its(:stdout) { should match(/Elrond Node CLI App/) }
     its(:exit_status) { should eq 0 }
   end
 
   describe command('/opt/elrond/bin/keygenerator') do
-    its(:stdout) { should match /generating files in/ }
+    its(:stdout) { should match(/generating files in/) }
     its(:exit_status) { should eq 0 }
   end
 
   describe file('validatorKey.pem') do
     it { should exist }
-     its(:content) { should match /-----BEGIN PRIVATE KEY for / }
-     its(:content) { should match /-----END PRIVATE KEY for / }
+    its(:content) { should match(/-----BEGIN PRIVATE KEY for /) }
+    its(:content) { should match(/-----END PRIVATE KEY for /) }
   end
 
   # describe file('/usr/bin/elrond-assessment') do

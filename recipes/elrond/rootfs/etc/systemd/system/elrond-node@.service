@@ -6,10 +6,6 @@ Description=Elrond Node %i
 After=network-online.target
 
 [Service]
-<% if arwen -%>
-; node is looking for this in CWD and it ignores PATH
-Environment="ARWEN_PATH=/opt/elrond/bin/arwen"
-<% end -%>
 User=elrond-node-%i
 ; technically, this also holds config, but the node binary makes it difficult
 ; to separate config in etc and variable data in var

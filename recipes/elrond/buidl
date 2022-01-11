@@ -7,7 +7,9 @@ ubuntu = 'ubuntu:20.04'
 require 'rake/file_utils_ext'
 require_relative 'lib'
 
+# rubocop:disable Style/MixinUsage
 include Rake::FileUtilsExt
+# rubocop:enable Style/MixinUsage
 
 extract_args
 setup_environment
