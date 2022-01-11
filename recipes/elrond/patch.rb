@@ -54,6 +54,7 @@ module FPM
           config.docker_keep_container ? nil : '--rm',
           '-e', "FPMC_UID=#{Process.uid}",
           '-e', "FPMC_GID=#{Process.gid}",
+          '--user', "#{Process.uid}:#{Process.gid}",
           config.debug ? ['-e', 'FPMC_DEBUG=true'] : nil,
           build_cache_mounts(cache_paths),
           '-v', "#{recipe_dir}:/recipe",
