@@ -19,7 +19,7 @@ class Elrond < FPM::Cookery::Recipe
   # this is set dynamically based on target network - prepared by rake rask
   version build_config[:pkg_version]
   description 'Elrond Services - node and proxy + tools '\
-    '(3rd party package build)'
+              '(3rd party package build)'
 
   config_files %w[
     /etc/systemd/system/elrond-node@.service
@@ -56,8 +56,10 @@ class Elrond < FPM::Cookery::Recipe
 
         sh 'GO111MODULE=on go mod vendor'
 
-        go_build 'node', 'cmd/node', "-v -ldflags='-X main.appVersion="\
-          "#{build_config[:cfg_version]}-0-#{tag_id}'"
+        go_build 'node', \
+                 'cmd/node', \
+                 "-v -ldflags='-X main.appVersion="\
+                 "#{build_config[:cfg_version]}-0-#{tag_id}'"
 
         go_build 'termui', 'cmd/termui'
         go_build 'logviewer', 'cmd/logviewer'
@@ -127,7 +129,7 @@ class Elrond < FPM::Cookery::Recipe
     lib_file = 'libwasmer_linux_amd64.so'
     lib_version = wasmer_version builddir("#{build_config[:bin_repo]}/go.mod")
     lib_path = "#{ENV['GOPATH']}/pkg/mod/github.com/\!elrond\!network/"\
-      "arwen-wasm-vm@#{lib_version}/wasmer/#{lib_file}"
+               "arwen-wasm-vm@#{lib_version}/wasmer/#{lib_file}"
     cp lib_path, destdir(lib_dir)
 
     # link into /lib as ldconfig behaves weirdly under Ubuntu 18.04

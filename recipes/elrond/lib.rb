@@ -129,7 +129,7 @@ end
 def tag_sha
   # fetch tag info
   tag_url = 'https://api.github.com/repos/ElrondNetwork/elrond-config-'\
-    "#{ENV['network']}net/git/ref/tags/#{ENV['cfg_tag']}"
+            "#{ENV['network']}net/git/ref/tags/#{ENV['cfg_tag']}"
   tag = get_url tag_url
 
   ENV['cfg_sha'] = JSON.parse(tag)['object']['sha']
@@ -139,7 +139,7 @@ def gen_cfg_version
   if ENV['cfg_tag'].nil?
     # get configuration git tag/version
     cfg_url = 'https://api.github.com/repos/ElrondNetwork/elrond-config-'\
-      "#{ENV['network']}net/releases/latest"
+              "#{ENV['network']}net/releases/latest"
     cfg = get_url cfg_url
 
     ENV['cfg_tag'] = JSON.parse(cfg)['tag_name']
@@ -156,10 +156,10 @@ def bin_url
   if ENV['cfg_sha']
     # bust cache - read from commit URL
     url = 'https://raw.githubusercontent.com/ElrondNetwork/'\
-      "elrond-config-#{ENV['network']}net/#{ENV['cfg_sha']}/binaryVersion"
+          "elrond-config-#{ENV['network']}net/#{ENV['cfg_sha']}/binaryVersion"
   else
     url = 'https://raw.githubusercontent.com/ElrondNetwork/elrond-config-'\
-      "#{ENV['network']}net/#{network_branch[ENV['network']]}/binaryVersion"
+          "#{ENV['network']}net/#{network_branch[ENV['network']]}/binaryVersion"
 
     warn ''
     warn 'WARNING: no cfg_sha env var - using default binaryVersion URL.'

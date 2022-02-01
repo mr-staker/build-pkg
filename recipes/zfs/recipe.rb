@@ -13,7 +13,7 @@ class Zfs < FPM::Cookery::Recipe
   maintainer build_config[:maintainer]
   license build_config[:license]
   source 'https://github.com/openzfs/zfs/releases/download/'\
-    "zfs-#{build_config[:version]}/zfs-#{build_config[:version]}.tar.gz"
+         "zfs-#{build_config[:version]}/zfs-#{build_config[:version]}.tar.gz"
   sha256 build_config[:sha256]
 
   # rubocop:disable Metrics/MethodLength

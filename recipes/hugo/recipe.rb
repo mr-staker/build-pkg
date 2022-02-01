@@ -7,8 +7,8 @@ require_relative 'metadata'
 class Hugo < FPM::Cookery::Recipe
   homepage 'https://github.com/gohugoio/hugo'
   source 'https://github.com/gohugoio/hugo/releases/download/'\
-    "v#{build_config[:version]}/"\
-    "hugo_extended_#{build_config[:version]}_Linux-64bit.tar.gz"
+         "v#{build_config[:version]}/"\
+         "hugo_extended_#{build_config[:version]}_Linux-64bit.tar.gz"
   sha256 build_config[:sha256]
   name 'hugo'
   version build_config[:version]

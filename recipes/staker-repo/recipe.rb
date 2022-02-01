@@ -54,8 +54,8 @@ class StakerRepo < FPM::Cookery::Recipe
     # build keyring
     Dir["#{destdir('etc/staker-repo')}/*.pem"].each do |sign_key|
       sh 'gpg --no-default-keyring --keyring='\
-        "#{destdir('usr/share/keyrings/staker-keyring.gpg')} --import "\
-        "#{sign_key}"
+         "#{destdir('usr/share/keyrings/staker-keyring.gpg')} --import "\
+         "#{sign_key}"
     end
   end
   # rubocop:enable Metrics/MethodLength

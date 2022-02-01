@@ -7,12 +7,12 @@ require_relative 'metadata'
 class Bfg < FPM::Cookery::Recipe
   homepage 'https://github.com/rtyley/bfg-repo-cleaner'
   source 'https://repo1.maven.org/maven2/com/madgag/bfg/'\
-    "#{build_config[:version]}/bfg-#{build_config[:version]}.jar"
+         "#{build_config[:version]}/bfg-#{build_config[:version]}.jar"
   sha256 build_config[:sha256]
   name 'bfg'
   version build_config[:version]
   description 'Removes large or troublesome blobs like git-filter-branch does,'\
-    ' but faster'
+              ' but faster'
   maintainer 'hello@mr.staker.ltd'
   license 'GPLv3'
   fpm_attributes({ deb_compression: 'xz', rpm_compression: 'xz' })

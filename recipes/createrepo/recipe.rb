@@ -6,7 +6,7 @@ require_relative 'metadata'
 class Createrepo < FPM::Cookery::Recipe
   homepage 'https://github.com/rpm-software-management/createrepo_c'
   source 'https://github.com/rpm-software-management/createrepo_c/archive/'\
-    "refs/tags/#{build_config[:version]}.tar.gz"
+         "refs/tags/#{build_config[:version]}.tar.gz"
   sha256 build_config[:sha256]
   name build_config[:name]
   version build_config[:version]

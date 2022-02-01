@@ -62,8 +62,8 @@ namespace :build do
     end
 
     sh 'bundle exec fpm-cook package --no-deps --docker '\
-      "--dockerfile #{dockerfile} "\
-      "--docker-image #{docker_img_prefix}/#{ENV['image']}"
+       "--dockerfile #{dockerfile} "\
+       "--docker-image #{docker_img_prefix}/#{ENV['image']}"
   end
 
   desc 'Build the package in Vagrant'
@@ -170,7 +170,7 @@ namespace :test do
 
     sh "docker rm -f #{@container}"
     sh "docker run --volume #{Dir.pwd}:/build --name #{@container} "\
-      "--detach #{@image} tail -f /dev/null"
+       "--detach #{@image} tail -f /dev/null"
   end
 
   desc 'Install package in container'

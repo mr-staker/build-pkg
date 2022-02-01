@@ -6,12 +6,12 @@ require_relative 'metadata'
 class Zck < FPM::Cookery::Recipe
   homepage 'https://github.com/zchunk/zchunk'
   source 'https://github.com/zchunk/zchunk/archive/refs/tags/'\
-    "#{build_config[:version]}.tar.gz"
+         "#{build_config[:version]}.tar.gz"
   sha256 build_config[:sha256]
   name build_config[:name]
   version build_config[:version]
   description 'zchunk is a compressed file format that splits the file into '\
-    'independent chunks'
+              'independent chunks'
   maintainer 'hello@mr.staker.ltd'
   license 'BSD-2-Clause'
 

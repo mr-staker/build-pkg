@@ -6,7 +6,7 @@ require_relative 'metadata'
 class Modulemd < FPM::Cookery::Recipe
   homepage 'https://github.com/fedora-modularity/libmodulemd/'
   source 'https://github.com/fedora-modularity/libmodulemd/archive/refs/tags/'\
-    "libmodulemd-#{build_config[:version]}.tar.gz"
+         "libmodulemd-#{build_config[:version]}.tar.gz"
   sha256 build_config[:sha256]
   name build_config[:name]
   version build_config[:version]

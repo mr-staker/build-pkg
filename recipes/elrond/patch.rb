@@ -24,7 +24,7 @@ module FPM
           image_name ||= "local/fpm-cookery/#{File.basename(recipe_dir)}:latest"
 
           Log.info "Building custom Docker image #{image_name} from "\
-            "#{dockerfile}"
+                   "#{dockerfile}"
 
           build_cmd = [
             config.docker_bin, 'build',
@@ -36,16 +36,17 @@ module FPM
           sh build_cmd
         else
           Log.warn "File #{dockerfile} does not exist - not building a "\
-            'custom Docker image'
+                   'custom Docker image'
         end
 
         if image_name.nil? || image_name.empty?
           image_name = "fpmcookery/#{FPM::Cookery::Facts.platform}-"\
-            "#{FPM::Cookery::Facts.osrelease}:#{FPM::Cookery::VERSION}"
+                       "#{FPM::Cookery::Facts.osrelease}:"\
+                       "#{FPM::Cookery::VERSION}"
         end
 
         Log.info "Building #{recipe.name}-#{recipe.version} inside a "\
-          "Docker container using image #{image_name}"
+                 "Docker container using image #{image_name}"
         Log.info "Mounting #{recipe_dir} as /recipe"
 
         cmd = [
@@ -165,16 +166,16 @@ module FPM
         if attributes[:deb_shlibs]
           unless script?(:after_install)
             logger.info('You gave --deb-shlibs but no --after-install, so ' \
-                         'I am adding an after-install script that runs ' \
-                         'ldconfig to update the system library cache')
+                        'I am adding an after-install script that runs ' \
+                        'ldconfig to update the system library cache')
             scripts[:after_install] = template(
               'deb/ldconfig.sh.erb'
             ).result(binding)
           end
           unless script?(:after_remove)
             logger.info('You gave --deb-shlibs but no --after-remove, so ' \
-                         'I am adding an after-remove script that runs ' \
-                         'ldconfig to update the system library cache')
+                        'I am adding an after-remove script that runs ' \
+                        'ldconfig to update the system library cache')
             scripts[:after_remove] = template(
               'deb/ldconfig.sh.erb'
             ).result(binding)
