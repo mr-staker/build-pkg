@@ -5,7 +5,7 @@
 ## Build dependencies
 
 ```bash
-sudo apt install meson libc6-dev libzstd-dev libssl-dev
+sudo apt install meson cmake pkg-config libc6-dev libzstd-dev libssl-dev libcurl4-openssl-dev libzstd-dev
 ```
 
 ## Build

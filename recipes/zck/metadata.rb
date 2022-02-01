@@ -10,8 +10,8 @@ def build_config
   end
 
   cfg = {
-    version: '1.1.9',
-    sha256: '9e9bac8bb92e86eba50dc7fcf1f79e7835534c3aa15274355ffd84a8bcc03f91',
+    version: '1.1.16',
+    sha256: '33934adecddc50c64615dd8cdfe52a79df674a5bb1d5e83a9c09e1d1e6e9b92c',
     pkg: ENV['pkg']
   }
 
