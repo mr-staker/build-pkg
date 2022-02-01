@@ -11,7 +11,7 @@ This opens the door for maintaining an RPM repository from an Ubuntu 20.04 works
 ```bash
 # install our deb repository
 # https://deb.staker.ltd/docs/intro/install-repository/
-sudo apt install cmake libzck-dev libmodulemd-dev libc6-dev libglib2.0-dev libpcre3-dev libffi-dev librpm-dev d
+sudo apt install cmake libzck-dev libmodulemd-dev libc6-dev libglib2.0-dev libpcre3-dev libffi-dev librpm-dev python3-dev
 ```
 
 These build dependencies are not available in Ubuntu 20.04 repositories, therefore these packages are provided via our own deb repository:
