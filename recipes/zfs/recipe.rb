@@ -39,13 +39,17 @@ class Zfs < FPM::Cookery::Recipe
 
   def build
     pkg_type = FPM::Cookery::Facts.target
-    macros_file = "#{ENV['HOME']}/.rpmmacros"
-    File.write macros_file, "%_buildhost mr.staker.ltd\n"
+    rpmmacros = "#{ENV['HOME']}/.rpmmacros"
+    puts "==> Write #{rpmmacros}"
+    File.write rpmmacros, "%_buildhost mr.staker.ltd\n"
 
     # slim tests to avoid zfs-dkms growing too big and going over
     # the Cloudflare Pages limit of 25 MiB per file
-    patch workdir('patches/disable-tests.patch'), 1
+    patch workdir('patches/disable.tests.Makefile.am.patch'), 1
+    patch workdir('patches/disable.tests.zfs.spec.in.patch'), 1
+    patch workdir('patches/disable.tests.configure.ac.patch'), 1
     sh './autogen.sh'
+    rm_rf 'tests'
 
     # for Red Hat and derivatives, this should have happen in Docker, but
     # ending up with a corrupted rpmdb
@@ -53,7 +57,7 @@ class Zfs < FPM::Cookery::Recipe
     configure '--enable-systemd'
     make '-j1', "#{pkg_type}-utils", "#{pkg_type}-dkms"
 
-    rm_f macros_file
+    rm_f rpmmacros
   end
 
   def install

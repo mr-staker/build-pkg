@@ -1,0 +1,14 @@
+diff --git a/rpm/generic/zfs.spec.in b/rpm/generic/zfs.spec.in
+index 7fa28ac72..8b4a105dd 100644
+--- a/rpm/generic/zfs.spec.in
++++ b/rpm/generic/zfs.spec.in
+@@ -533,9 +533,6 @@ systemctl --system daemon-reload >/dev/null || true
+ %doc AUTHORS COPYRIGHT LICENSE NOTICE README.md
+
+ %files test
+-%{_datadir}/%{name}/zfs-tests
+-%{_datadir}/%{name}/test-runner
+-%{_datadir}/%{name}/runfiles
+ %{_datadir}/%{name}/*.sh
+
+ %files dracut

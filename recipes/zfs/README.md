@@ -7,7 +7,7 @@
 ## Build dependencies
 
 ```bash
-sudo apt install build-essential autoconf automake libtool gawk alien fakeroot dkms libblkid-dev uuid-dev libudev-dev libssl-dev zlib1g-dev libaio-dev libattr1-dev libelf-dev linux-headers-$(uname -r) python3 python3-dev python3-setuptools python3-cffi libffi-dev dkms rpm alien
+sudo apt install curl ca-certificates build-essential git autoconf automake libtool gawk alien fakeroot dkms rpm python3 python3-setuptools python3-cffi python3-distlib python3-packaging linux-headers-virtual libblkid-dev uuid-dev libudev-dev libssl-dev zlib1g-dev libaio-dev libattr1-dev libelf-dev python3-dev libffi-dev
 ```
 
 ## Build
@@ -15,6 +15,9 @@ sudo apt install build-essential autoconf automake libtool gawk alien fakeroot d
 ```bash
 bundle exec rake build # deb
 bundle exec rake build:vagrant # rpm
+
+bundle exec rake build:docker image=ubuntu:20.04 # alternative deb build - e.g on WSL2
+bundle exec rake build:docker image=oracle:8.4 # alternative rpm build - e.g on WSL2
 ```
 
 Pro tip: Clean the project in between the builds (won't touch build artefacts).

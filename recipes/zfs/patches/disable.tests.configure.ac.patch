@@ -1,30 +1,8 @@
-diff --git a/Makefile.am b/Makefile.am
-index 060729642..d5e488b55 100644
---- a/Makefile.am
-+++ b/Makefile.am
-@@ -8,7 +8,7 @@ SUBDIRS += rpm
- endif
- 
- if CONFIG_USER
--SUBDIRS += man scripts lib tests cmd etc contrib
-+SUBDIRS += man scripts lib cmd etc contrib
- if BUILD_LINUX
- SUBDIRS += udev
- endif
-@@ -125,7 +125,7 @@ cstyle:
- 
- filter_executable = -exec test -x '{}' \; -print
- 
--SHELLCHECKDIRS = cmd contrib etc scripts tests
-+SHELLCHECKDIRS = cmd contrib etc scripts
- SHELLCHECKSCRIPTS = autogen.sh
- 
- PHONY += checkabi storeabi
 diff --git a/configure.ac b/configure.ac
-index 6f34b210d..f7f10f49d 100644
+index ebc7b276a..f7f10f49d 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -194,220 +194,6 @@ AC_CONFIG_FILES([
+@@ -194,221 +194,6 @@ AC_CONFIG_FILES([
  	rpm/redhat/zfs-kmod.spec
  	rpm/redhat/zfs.spec
  	scripts/Makefile
@@ -55,6 +33,7 @@ index 6f34b210d..f7f10f49d 100644
 -	tests/zfs-tests/cmd/mktree/Makefile
 -	tests/zfs-tests/cmd/mmap_exec/Makefile
 -	tests/zfs-tests/cmd/mmap_libaio/Makefile
+-	tests/zfs-tests/cmd/mmap_seek/Makefile
 -	tests/zfs-tests/cmd/mmapwrite/Makefile
 -	tests/zfs-tests/cmd/nvlist_to_lua/Makefile
 -	tests/zfs-tests/cmd/randfree_file/Makefile
@@ -245,17 +224,3 @@ index 6f34b210d..f7f10f49d 100644
  	udev/Makefile
  	udev/rules.d/Makefile
  	zfs.release
-diff --git a/rpm/generic/zfs.spec.in b/rpm/generic/zfs.spec.in
-index 7fa28ac72..8b4a105dd 100644
---- a/rpm/generic/zfs.spec.in
-+++ b/rpm/generic/zfs.spec.in
-@@ -533,9 +533,6 @@ systemctl --system daemon-reload >/dev/null || true
- %doc AUTHORS COPYRIGHT LICENSE NOTICE README.md
- 
- %files test
--%{_datadir}/%{name}/zfs-tests
--%{_datadir}/%{name}/test-runner
--%{_datadir}/%{name}/runfiles
- %{_datadir}/%{name}/*.sh
- 
- %files dracut

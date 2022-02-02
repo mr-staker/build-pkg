@@ -2,11 +2,11 @@
 
 def build_config
   {
-    version: '2.1.1',
-    sha256: 'bd4f48d009f3b5e291390bde62b0131b8bf3fab09f4fc0fa3591b1f2e7074cff',
+    version: '2.1.2',
+    sha256: '258cf1d17a1f668a3b99b61eaf14be06c614df42503db0319bef1b9fc4c8b9e7',
     homepage: 'https://github.com/openzfs/zfs',
     maintainer: 'hello@mr.staker.ltd',
     license: 'CDDL',
-    cinc_version: '16.11.7'
+    cinc_version: '17.9.26'
   }
 end
