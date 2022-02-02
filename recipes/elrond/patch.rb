@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+require 'json/version'
+require 'json/generic_object'
+
+# patch JSON parser 1.8.6 to work with Ruby 3
+module JSON
+  class << self
+    def parse(source, _opts = {})
+      Parser.new(source).parse
+    end
+  end
+end
+
 require 'fpm/package/deb'
 
 module FPM
