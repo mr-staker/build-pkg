@@ -37,17 +37,21 @@ class Zfs < FPM::Cookery::Recipe
   end
   # rubocop:enable Metrics/MethodLength
 
+  def patch_disable_tests
+    # slim tests to avoid zfs-dkms growing too big and going over
+    # the Cloudflare Pages limit of 25 MiB per file
+    patch workdir('patches/disable.tests.Makefile.am.patch'), 1
+    patch workdir('patches/disable.tests.zfs.spec.in.patch'), 1
+    patch workdir('patches/disable.tests.configure.ac.patch'), 1
+  end
+
   def build
     pkg_type = FPM::Cookery::Facts.target
     rpmmacros = "#{ENV['HOME']}/.rpmmacros"
     puts "==> Write #{rpmmacros}"
     File.write rpmmacros, "%_buildhost mr.staker.ltd\n"
 
-    # slim tests to avoid zfs-dkms growing too big and going over
-    # the Cloudflare Pages limit of 25 MiB per file
-    patch workdir('patches/disable.tests.Makefile.am.patch'), 1
-    patch workdir('patches/disable.tests.zfs.spec.in.patch'), 1
-    patch workdir('patches/disable.tests.configure.ac.patch'), 1
+    patch_disable_tests
     sh './autogen.sh'
     rm_rf 'tests'
 
