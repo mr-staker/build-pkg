@@ -17,7 +17,7 @@ bundle exec rake build # deb
 bundle exec rake build:vagrant # rpm
 
 bundle exec rake build:docker image=ubuntu:20.04 # alternative deb build - e.g on WSL2
-bundle exec rake build:docker image=oracle:8.4 # alternative rpm build - e.g on WSL2
+bundle exec rake build:docker image=oracle:8.5 # alternative rpm build - e.g on WSL2
 ```
 
 Pro tip: Clean the project in between the builds (won't touch build artefacts).

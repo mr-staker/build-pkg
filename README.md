@@ -10,8 +10,9 @@ curl -OL https://cinc.osuosl.org/files/unstable/cinc-workstation/22.1.745/ubuntu
 eval "$(cinc shell-init zsh)" # or bash if you use it
 
 # Ubuntu 20.04 example
-# Docker for Windows/Mac is recommended for those platforms - jump to docker info
-# Bear in mind that Docker for Windows/Mac requires your code directory to be shared with the Docker VM
+# Docker Desktop for Windows/Mac is recommended for those platforms - jump to docker info
+# Bear in mind that Docker Desktop for Windows/Mac requires your code directory to be shared with the Docker VM
+# The best option for Docker Desktop for Windows is the WSL2 backend
 # Docker setup - Ubuntu 20.04
 sudo apt install apt-transport-https ca-certificates curl gnupg lsb-release build-essential
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg

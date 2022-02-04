@@ -5,7 +5,7 @@ Elrond node, proxy services + tools pkg build recipe. Built on top of [fpm-cooke
 Supports the following Linux distribution families:
 
  * Debian (including derivatives e.g Ubuntu) via deb packages. Built on Ubuntu 20.04.
- * Red Hat (including rebuilds e.g CentOS/Rocky/Oracle and derivatives) via rpm packages. Built on Oracle Linux 8.4.
+ * Red Hat (including rebuilds e.g CentOS/Rocky/Oracle and derivatives) via rpm packages. Built on Oracle Linux 8.5.
 
 ## Reasons for doing this
 
@@ -40,9 +40,9 @@ bundle exec rake build network=main
 # a corresponding Dockerfile for the target distro must exist beforehand
 # in dockerfiles
 
-# build testnet pkg on Oracle Linux 8.4
+# build testnet pkg on Oracle Linux 8.5
 # should also work on RHEL / what's left of CentOS
-bundle exec rake build:docker network=test image=oracle:8.4
+bundle exec rake build:docker network=test image=oracle:8.5
 
 # build devnet pkg on Ubuntu 20.04
 # this builds the latest pkg for the target release network (e.g dev)
@@ -54,21 +54,21 @@ n.b in case of version mismatch i.e binaryVersion and release tag don't match (r
 
 ```bash
 bundle exec rake build:docker network=test image=ubuntu:20.04 bin_version=tags/v1.1.55
-bundle exec rake build:docker network=test image=oracle:8.4 bin_version=tags/v1.1.55
+bundle exec rake build:docker network=test image=oracle:8.5 bin_version=tags/v1.1.55
 ```
 
 With both custom `bin_version` and `cfg_tag`:
 
 ```bash
 bundle exec rake build:docker network=test image=ubuntu:20.04 bin_version=tags/v1.1.57 cfg_tag=T1.1.57.0
-bundle exec rake build:docker network=test image=oracle:8.4 bin_version=tags/v1.1.57 cfg_tag=T1.1.57.0
+bundle exec rake build:docker network=test image=oracle:8.5 bin_version=tags/v1.1.57 cfg_tag=T1.1.57.0
 ```
 
 To combine both `bin_version` and `cfg_tag`:
 
 ```bash
 bundle exec rake build:docker network=test image=ubuntu:20.04 version=1.1.57.0
-bundle exec rake build:docker network=test image=oracle:8.4 version=1.1.57.0
+bundle exec rake build:docker network=test image=oracle:8.5 version=1.1.57.0
 ```
 
 Must point to a config version (without leading prefix). This example generates `bin_version=tags/v1.1.57` and `cfg_tag=T1.1.57.0` - notice the leading `T` for `cfg_tag`. For mainnet the prefix is `v` and for devnet is `D`. The prefix is automatically filled to avoid any mistakes.
@@ -92,7 +92,7 @@ To disable arwen from a build (only used on testnet so far):
 
 ```bash
 bundle exec rake build:docker network=test image=ubuntu:20.04 arwen=false
-bundle exec rake build:docker network=test image=oracle:8.4 arwen=false
+bundle exec rake build:docker network=test image=oracle:8.5 arwen=false
 ```
 
 
@@ -110,7 +110,7 @@ Check deb pkg info:
 dpkg --info pkg/elrond-test_1.1.51.1_amd64.deb
  new Debian package, version 2.0.
  size 20578920 bytes: control archive=1640 bytes.
-      83 bytes,     2 lines      conffiles            
+      83 bytes,     2 lines      conffiles
      276 bytes,    10 lines      control
     3537 bytes,    38 lines      md5sums
  Package: elrond-test
