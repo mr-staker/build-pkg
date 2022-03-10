@@ -54,8 +54,6 @@ class Elrond < FPM::Cookery::Recipe
         puts "===> Build in #{Dir.pwd}"
         puts '===> Download go modules'
 
-        sh 'GO111MODULE=on go mod vendor'
-
         go_build 'node', \
                  'cmd/node', \
                  "-v -ldflags='-X main.appVersion="\
