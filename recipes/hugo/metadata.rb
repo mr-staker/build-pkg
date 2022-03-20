@@ -2,7 +2,7 @@
 
 def build_config
   {
-    version: '0.92.1',
-    sha256: 'b6cdb9b5643958b4240eb39a52d1ba8f0030af46e808410644444983e1737090'
+    version: '0.95.0',
+    sha256: '243c5cb0453c815b46c1c5cc42eb26891a3f12274961116f70bcdf7bc7c06389'
   }
 end
