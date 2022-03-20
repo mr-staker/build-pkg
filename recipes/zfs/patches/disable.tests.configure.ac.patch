@@ -1,8 +1,8 @@
 diff --git a/configure.ac b/configure.ac
-index ebc7b276a..f7f10f49d 100644
+index 2671434af..f7f10f49d 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -194,221 +194,6 @@ AC_CONFIG_FILES([
+@@ -194,222 +194,6 @@ AC_CONFIG_FILES([
  	rpm/redhat/zfs-kmod.spec
  	rpm/redhat/zfs.spec
  	scripts/Makefile
@@ -195,6 +195,7 @@ index ebc7b276a..f7f10f49d 100644
 -	tests/zfs-tests/tests/functional/rootpool/Makefile
 -	tests/zfs-tests/tests/functional/rsend/Makefile
 -	tests/zfs-tests/tests/functional/scrub_mirror/Makefile
+-	tests/zfs-tests/tests/functional/simd/Makefile
 -	tests/zfs-tests/tests/functional/slog/Makefile
 -	tests/zfs-tests/tests/functional/snapshot/Makefile
 -	tests/zfs-tests/tests/functional/snapused/Makefile
