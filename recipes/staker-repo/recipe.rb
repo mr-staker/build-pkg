@@ -1,12 +1,13 @@
 # frozen_string_literal: true
 
 require_relative 'patch'
+require_relative 'metadata'
 
 # Mr Staker repository configuration and signing keys
 class StakerRepo < FPM::Cookery::Recipe
   homepage 'https://mr.staker.ltd'
   name 'staker-repo'
-  version '21.04.02'
+  version build_config[:version]
   description 'Repository configuration and signing keys'
   maintainer 'hello@mr.staker.ltd'
   license 'MIT'

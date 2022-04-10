@@ -1,0 +1,19 @@
+#!/bin/bash
+
+if [ -f /usr/bin/apt ]
+then
+  apt install -y /build/pkg/*.deb
+  apt update
+  apt install -y elrond-test
+  exit $?
+fi
+
+if [ -f /usr/bin/dnf ]
+then
+  dnf install -y /build/pkg/*.rpm
+  dnf install -y elrond-test
+  exit $?
+fi
+
+>&2 echo 'Error: no installer available'
+exit 1
