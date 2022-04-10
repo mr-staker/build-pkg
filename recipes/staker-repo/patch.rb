@@ -1,5 +1,17 @@
 # frozen_string_literal: true
 
+require 'json/version'
+require 'json/generic_object'
+
+# patch JSON parser 1.8.6 to work with Ruby 3
+module JSON
+  class << self
+    def parse(source, _opts = {})
+      Parser.new(source).parse
+    end
+  end
+end
+
 require 'fpm/package/deb'
 
 module FPM
@@ -55,12 +67,13 @@ module FPM
           config.docker_keep_container ? nil : '--rm',
           '-e', "FPMC_UID=#{Process.uid}",
           '-e', "FPMC_GID=#{Process.gid}",
+          '--user', "#{Process.uid}:#{Process.gid}",
           config.debug ? ['-e', 'FPMC_DEBUG=true'] : nil,
           build_cache_mounts(cache_paths),
           '-v', "#{recipe_dir}:/recipe",
           '-w', '/recipe',
           image_name,
-          'fpm-cook', 'package',
+          'fpm-cook', 'package', '--no-deps',
           config.debug ? '-D' : nil,
           File.basename(recipe.filename)
         ].compact.flatten.join(' ')
