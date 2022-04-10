@@ -3,7 +3,8 @@
 if [ -f /usr/bin/apt ]
 then
   apt -y install curl apt-transport-https gnupg2
-  curl 'https://keys.openpgp.org/vks/v1/by-fingerprint/8E0D38C40089F860005989ACFD6652320303527F' | apt-key add -
+  curl 'https://keybase.io/mrstaker/pgp_keys.asc?fingerprint=8e0d38c40089f860005989acfd6652320303527f' | apt-key add -
+  curl 'https://keybase.io/mrstaker/pgp_keys.asc?fingerprint=c8ff9465dc43e057f5d592eec190d4b4328516a1' | apt-key add -
   echo 'deb [arch=amd64] https://deb.staker.ltd stable main' | tee /etc/apt/sources.list.d/staker.list
   apt update
 
@@ -17,7 +18,8 @@ then
 [staker]
 name=Mr Staker rpm repository
 baseurl=https://rpm.staker.ltd/$basearch/
-gpgkey=https://keys.openpgp.org/vks/v1/by-fingerprint/8E0D38C40089F860005989ACFD6652320303527F
+gpgkey=https://keybase.io/mrstaker/pgp_keys.asc?fingerprint=8e0d38c40089f860005989acfd6652320303527f
+       https://keybase.io/mrstaker/pgp_keys.asc?fingerprint=c8ff9465dc43e057f5d592eec190d4b4328516a1
 gpgcheck=1
 repo_gpgcheck=1
 enabled=1
