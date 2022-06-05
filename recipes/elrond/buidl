@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-oracle = 'oracle:8.5'
+oracle = 'oracle:8.6'
 ubuntu = 'ubuntu:20.04'
 
 require 'rake/file_utils_ext'
