@@ -9,7 +9,8 @@ APT::Get::Assume-Yes "true"; \n\
 APT::Install-Suggests "0";' > /etc/apt/apt.conf.d/01buildconfig
 
 RUN apt update && apt install -yqq curl ca-certificates build-essential git autoconf automake libtool gawk alien fakeroot dkms rpm python3 python3-setuptools python3-cffi python3-distlib python3-packaging gpg gpg-agent
-RUN curl -LO https://get.golang.org/$(uname)/go_installer && chmod +x go_installer && ./go_installer && mv /root/.go /opt/go
+RUN curl -LO https://raw.githubusercontent.com/ElrondNetwork/elrond-go-scripts/main/config/variables.cfg
+RUN curl -LO https://get.golang.org/$(uname)/go_installer && chmod +x go_installer && ./go_installer -version $(grep GO_LATEST_TESTED variables.cfg | cut -d '"' -f 2 | tr -d go) && mv /root/.go /opt/go
 RUN curl -L -o omnibus.sh https://omnitruck.cinc.sh/install.sh && chmod +x omnibus.sh && ./omnibus.sh -v 17.9.26
 RUN /opt/cinc/embedded/bin/gem install fpm-cookery -v 0.35.1
 RUN /opt/cinc/embedded/bin/gem install serverspec -v 2.41.8
