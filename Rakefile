@@ -168,7 +168,7 @@ namespace :test do
   task setup: %w[test:init] do
     recipe_dir
 
-    sh "docker rm -f #{@container}"
+    system "docker rm -f #{@container}"
     sh "docker run --volume #{Dir.pwd}:/build --name #{@container} "\
        "--detach #{@image} tail -f /dev/null"
   end

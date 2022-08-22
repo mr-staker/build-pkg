@@ -7,6 +7,8 @@ Supports the following Linux distribution families:
  * Debian (including derivatives e.g Ubuntu) via deb packages. Built on Ubuntu 20.04.
  * Red Hat (including rebuilds e.g CentOS/Rocky/Oracle and derivatives) via rpm packages. Built on Oracle Linux 8.6.
 
+Supports Podman build backend as alternative to Docker.
+
 ## Reasons for doing this
 
 While the existing setup scripts are enough to get you going, that's becoming a bit difficult to maintain for an end to end automation setup. To understand this statement a bit better, shell scripts are notoriously bad/difficult at ensuring convergence/idempotence (i.e configuration management systems theory).

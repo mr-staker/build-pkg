@@ -17,6 +17,13 @@ docker info
 bundle install
 ```
 
+Podman may be supported as alternative to Docker. Requirements:
+
+ * docker -> podman symlink
+ * Linux build machine - either native or WSL2
+
+Each recipe implements podman support separately. Check recipe README for confirmation whether podman is supported.
+
 ## Build recipes
 
  * [bfg](/recipes/bfg)
