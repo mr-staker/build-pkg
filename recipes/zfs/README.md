@@ -4,6 +4,8 @@
 
 `fpm-cookery` is only used as a wrapper to maintain the same build framework the rest of the packages do.
 
+Supports Podman build backend as alternative to Docker.
+
 ## Build dependencies
 
 ```bash

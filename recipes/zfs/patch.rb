@@ -49,13 +49,23 @@ module FPM
                  "Docker container using image #{image_name}"
         Log.info "Mounting #{recipe_dir} as /recipe"
 
+        user = Process.uid
+        group = Process.gid
+
+        if File.exist? '/usr/bin/podman'
+          # Podman runs rootless so root inside the container
+          # is actually user:group on host
+          user = 0
+          group = 0
+        end
+
         cmd = [
           config.docker_bin, 'run', '-ti',
           '--name', "fpm-cookery-build-#{File.basename(recipe_dir)}",
           config.docker_keep_container ? nil : '--rm',
           '-e', "FPMC_UID=#{Process.uid}",
           '-e', "FPMC_GID=#{Process.gid}",
-          '--user', "#{Process.uid}:#{Process.gid}",
+          '--user', "#{user}:#{group}",
           config.debug ? ['-e', 'FPMC_DEBUG=true'] : nil,
           build_cache_mounts(cache_paths),
           '-v', "#{recipe_dir}:/recipe",
