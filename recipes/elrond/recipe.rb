@@ -105,6 +105,7 @@ class Elrond < FPM::Cookery::Recipe
       ln_sf "/#{dest_path}", 'elrond'
     end
 
+    # TODO: split binaries in dedicated packages to tacke the size limits
     # copy binaries
     binaries = %w[
       cmd/node/node
@@ -120,8 +121,9 @@ class Elrond < FPM::Cookery::Recipe
       install_bin build_config[:bin_repo], bin_path, bin_dir
     end
 
-    # copy Elrond proxy
-    install_bin build_config[:prx_repo], 'cmd/proxy/proxy', bin_dir
+    # copy Elrond proxy - disabled due to fat binaries that go
+    # over the 25 MiB limit
+    # install_bin build_config[:prx_repo], 'cmd/proxy/proxy', bin_dir
 
     # copy libwasmer - for the time being, only Linux/amd64 is supported
     lib_file = 'libwasmer_linux_amd64.so'
