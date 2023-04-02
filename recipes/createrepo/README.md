@@ -1,10 +1,10 @@
 ## About
 
-[createrepo_c](https://github.com/rpm-software-management/createrepo_c) build for Ubuntu 20.04.
+[createrepo_c](https://github.com/rpm-software-management/createrepo_c) build for Ubuntu 22.04.
 
 createrepo_c is the C implementation of createrepo (the traditional one being a Python 2 application which hasn't been maintained for years), a program that creates a repomd (xml-based rpm metadata) repository from a set of rpms.
 
-This opens the door for maintaining an RPM repository from an Ubuntu 20.04 workstation. This wasn't easily doable ... until now.
+This opens the door for maintaining an RPM repository from an Ubuntu 22.04 workstation. This wasn't easily doable ... until now.
 
 ## Build dependencies
 
@@ -14,7 +14,7 @@ This opens the door for maintaining an RPM repository from an Ubuntu 20.04 works
 sudo apt install cmake libzck-dev libmodulemd-dev libc6-dev libglib2.0-dev libpcre3-dev libffi-dev librpm-dev python3-dev
 ```
 
-These build dependencies are not available in Ubuntu 20.04 repositories, therefore these packages are provided via our own deb repository:
+These build dependencies are not available in Ubuntu 22.04 repositories, therefore these packages are provided via our own deb repository:
 
  * libzck-dev
  * libmodulemd-dev

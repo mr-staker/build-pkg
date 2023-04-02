@@ -15,9 +15,9 @@ class Createrepo < FPM::Cookery::Recipe
   license 'GPLv2'
 
   # probably needless to say, but the runtime dependencies are
-  # Ubuntu 20.04 specific
+  # Ubuntu 22.04 specific
   depends %w[
-    libzck1 libmodulemd2 libc6 libglib2.0-0 libpcre3 libffi7 librpm8
+    libzck1 libmodulemd2 libc6 libglib2.0-0 libpcre3 libffi7 librpm9
   ] + build_config[:depends]
 
   build_depends %w[
@@ -58,7 +58,9 @@ class Createrepo < FPM::Cookery::Recipe
       ]
 
       lib_dirs = [
-        "#{destdir}/usr/lib"
+        "#{destdir}/usr/lib",
+        "#{destdir}/usr/local",
+        "#{destdir}/usr/local/lib"
       ]
 
       # headers and pkgconfig
@@ -83,7 +85,7 @@ class Createrepo < FPM::Cookery::Recipe
           rm_rf dir
         end
 
-        rm_rf "#{destdir}/usr/lib/python3"
+        rm_rf "#{destdir}/usr/local"
 
         lib_files = "#{destdir}/usr/lib/x86_64-linux-gnu/libcreaterepo_c.so*"
         Dir[lib_files].each do |file|
