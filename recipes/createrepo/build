@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# build dependencies
+sudo apt install libzck-dev libmodulemd-dev
+
+# binaries + docs
+bundle exec rake build pkg=bin
+# libraries
+bundle exec rake build pkg=lib
+# dev package - headers, pkgconfig
+bundle exec rake build pkg=dev
+
+# test
+bundle exec rake test:all

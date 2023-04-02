@@ -27,12 +27,13 @@ The recipes for building those packages are available here:
 ## Build
 
 ```bash
-# binaries + docs
-bundle exec rake build pkg=bin
-# libraries
-bundle exec rake build pkg=lib
-# dev package - headers, pkgconfig
-bundle exec rake build pkg=dev
+bundle exec rake build:all
 ```
 
 The `*_c` binaries have symlinks using their names without the `_c` suffix. For example, there's a `createrepo` symlink to `createrepo_c`.
+
+## Publish
+
+```bash
+bundle exec rake publish:all
+```

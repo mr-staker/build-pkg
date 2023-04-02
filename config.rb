@@ -31,6 +31,10 @@ def build_pkg_config
       version: '1.14.0',
       sha256: '1a75e9390541f4b55d9c01256b361b815c1e0a263e2fb3d072b55c2911ead0b7',
     },
+    createrepo: {
+      version: '0.20.1',
+      sha256: 'f9d025295f15169ef0767460faa973aebbfb2933a55ded9500c50435c650eadc',
+    },
     modulemd: {
       version: '2.14.0',
       sha256: '219bca4797a3de74ee961c0252067654e6ca5414e22610db7924826b1895e369',
