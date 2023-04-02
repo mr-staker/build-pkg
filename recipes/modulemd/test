@@ -1,0 +1,5 @@
+#!/bin/bash
+
+set -euo pipefail
+
+rspec spec/size_spec.rb

@@ -9,5 +9,6 @@ gem 'fpm-cookery', "= #{build_pkg_config[:versions][:fpm_cookery]}"
 gem 'git'
 gem 'pry'
 gem 'rake'
+gem 'repo-mgr', '= 0.3.0'
 gem 'rubocop'
 gem 'serverspec', "= #{build_pkg_config[:versions][:serverspec]}"

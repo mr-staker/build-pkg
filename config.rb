@@ -22,14 +22,18 @@ def build_pkg_config
       oracle: '8.7',
       uek: '6',
       ubuntu: '20.04',
-      cinc: '17.9.26', # kept in sync with CINC Workstation
-      serverspec: '2.41.8', # keep in sync with CINC
+      cinc: '18.0.185', # kept in sync with CINC Workstation
+      serverspec: '2.42.2',
       fpm_cookery: '0.36.0',
       go: vars.match(/GO_LATEST_TESTED="go(.*?)"/)[1]
     },
     bfg: {
       version: '1.14.0',
       sha256: '1a75e9390541f4b55d9c01256b361b815c1e0a263e2fb3d072b55c2911ead0b7',
+    },
+    modulemd: {
+      version: '2.14.0',
+      sha256: '219bca4797a3de74ee961c0252067654e6ca5414e22610db7924826b1895e369',
     },
     zck: {
       version: '1.3.0',
