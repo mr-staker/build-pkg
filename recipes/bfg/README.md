@@ -7,5 +7,5 @@ BFG removes large or troublesome blobs like git-filter-branch does for git repos
 ## Build
 
 ```bash
-bundle exec rake build
+bundle exec rake build:all
 ```

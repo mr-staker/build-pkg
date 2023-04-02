@@ -5,3 +5,6 @@ git/
 pkg/
 go/
 build.yml
+config.yml
+spec/spec_helper.rb
+spec/size_spec.rb

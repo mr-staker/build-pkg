@@ -1,8 +1,38 @@
 # frozen_string_literal: true
 
+require 'erb'
+require 'yaml'
+
+build_pkg_root = File.dirname(File.realpath(__FILE__))
 docker_img_prefix = 'local/build-pkg'
 
-def recipe_dir
+require "#{build_pkg_root}/config"
+
+# Openstruct/ERB wrapper
+class Template
+  def initialize(hash)
+    hash.each do |key, value|
+      instance_variable_set('@' + key.to_s, value)
+      create_attr key
+    end
+  end
+
+  def create_method(name, &block)
+    self.class.send(:define_method, name, &block)
+  end
+
+  def create_attr(name)
+    create_method( name.to_sym ) do
+      instance_variable_get("@" + name.to_s)
+    end
+  end
+
+  def render(template)
+    ERB.new(template).result(binding)
+  end
+end
+
+def recipe_dir(root)
   return if File.exist? 'recipe.rb'
 
   if ENV['recipe'].nil?
@@ -10,7 +40,7 @@ def recipe_dir
     Kernel.exit 1
   end
 
-  Dir.chdir "recipes/#{ENV['recipe']}"
+  Dir.chdir "#{root}/recipes/#{ENV['recipe']}"
 end
 
 def check_publisher
@@ -38,29 +68,50 @@ end
 
 # rubocop:disable Metrics/BlockLength
 namespace :build do
+  desc 'Dump config as yaml into recipe dir'
+  task :config do
+    recipe_dir build_pkg_root
+    File.write 'config.yml', build_pkg_config.to_yaml
+  end
+
+  desc 'Invoke recipe build script'
+  task all: %w[build:config] do
+    recipe_dir build_pkg_root
+    sh './build'
+  end
+
   desc 'Build package'
   task :default do
-    recipe_dir
+    recipe_dir build_pkg_root
     target = ''
     target = "--target #{ENV['target']}" unless ENV['target'].nil?
     sh "fpm-cook package --no-deps #{target}"
   end
 
-  desc 'Build the package in Docker'
-  task :docker do
-    recipe_dir
-
-    dockerfile = "dockerfiles/#{ENV['image']}"
-    dockerfile = "../../#{dockerfile}" unless File.exist? dockerfile
-
+  desc 'Build Dockerfile from template'
+  task :template do
     if ENV['image'].nil?
       warn 'ERR: a Docker image must be specified'
       Kernel.exit 1
-    elsif !File.exist? dockerfile
-      warn "ERR: missing #{dockerfile}"
-      Kernel.exit 1
     end
 
+    dockerfile = "#{build_pkg_root}/docker/files/#{ENV['image']}"
+    template_file = "#{build_pkg_root}/docker/templates/#{ENV['image']}.erb"
+
+    if File.exist? dockerfile
+      next
+    end
+
+    template_contents = File.read(template_file)
+    dockerfile_contents = Template.new(build_pkg_config).render(template_contents)
+    File.write(dockerfile, dockerfile_contents)
+  end
+
+  desc 'Build the package in Docker'
+  task :docker do
+    recipe_dir build_pkg_root
+    Rake::Task['build:template'].invoke
+    dockerfile = "#{build_pkg_root}/docker/files/#{ENV['image']}"
     sh 'bundle exec fpm-cook package --no-deps --docker '\
        "--dockerfile #{dockerfile} "\
        "--docker-image #{docker_img_prefix}/#{ENV['image']}"
@@ -68,7 +119,7 @@ namespace :build do
 
   desc 'Build the package in Vagrant'
   task :vagrant do
-    recipe_dir
+    recipe_dir build_pkg_root
 
     sh 'vagrant up'
 
@@ -84,15 +135,15 @@ task build: %w[build:default]
 namespace :clean do
   desc 'Clean build files'
   task :default do
-    recipe_dir
-    rm_rf 'tmp-build'
+    recipe_dir build_pkg_root
+    sh 'sudo rm -rf tmp-build'
     rm_rf 'tmp-dest'
     rm_f 'build.yml'
   end
 
   desc 'Clean build artefacts'
   task :pkg do
-    recipe_dir
+    recipe_dir build_pkg_root
     rm_rf 'pkg'
   end
 
@@ -110,9 +161,16 @@ namespace :clean do
     rm_rf '.vagrant'
   end
 
+  desc 'Clean Dockerfiles generated from templates'
+  task :dockerfiles do
+    rm_rf "#{build_pkg_root}/docker/files"
+    mkdir_p "#{build_pkg_root}/docker/files"
+    touch "#{build_pkg_root}/docker/files/.gitkeep"
+  end
+
   desc 'Remove all build files'
-  task all: %w[clean:default clean:pkg] do
-    recipe_dir
+  task all: %w[clean:default clean:pkg clean:dockerfiles] do
+    recipe_dir build_pkg_root
     rm_rf 'cache' unless File.exist? 'cache/dummy.tar.gz'
     rm_rf 'go'
     rm_rf 'git'
@@ -123,9 +181,15 @@ end
 task clean: %w[clean:default]
 
 namespace :publish do
+  desc 'Invoke recipe publish script'
+  task :all do
+    recipe_dir build_pkg_root
+    sh './publish'
+  end
+
   desc 'Setup publish targets'
   task :setup do
-    recipe_dir
+    recipe_dir build_pkg_root
     check_publisher
     clean_dummies
   end
@@ -154,6 +218,20 @@ end
 
 # rubocop:disable Metrics/BlockLength
 namespace :test do
+  desc 'Copy upstream test to recipe dir'
+  task :copy do
+    recipe_dir build_pkg_root
+    %w[spec_helper.rb size_spec.rb].each do |file|
+      cp "#{build_pkg_root}/spec/#{file}", "spec/#{file}"
+    end
+  end
+
+  desc 'Invoke test script from recipe dir'
+  task all: %w[test:copy] do
+    recipe_dir build_pkg_root
+    sh './test'
+  end
+
   task :init do
     if ENV['image'].nil?
       warn 'ERR: a Docker image must be specified'
@@ -161,12 +239,12 @@ namespace :test do
     end
 
     @container = "build-#{File.basename(Dir.pwd)}-#{ENV['image'].tr(':', '-')}"
-    @image = "local/build-pkg/#{ENV['image']}"
+    @image = "#{docker_img_prefix}/#{ENV['image']}"
   end
 
   desc 'Setup test environment'
   task setup: %w[test:init] do
-    recipe_dir
+    recipe_dir build_pkg_root
 
     system "docker rm -f #{@container}"
     sh "docker run --volume #{Dir.pwd}:/build --name #{@container} "\
@@ -175,26 +253,26 @@ namespace :test do
 
   desc 'Install package in container'
   task install: %w[test:init] do
-    recipe_dir
+    recipe_dir build_pkg_root
 
-    sh "docker exec #{@container} /build/installer"
+    sh "docker exec #{@container} /build/install"
   end
 
   desc 'Run test suite for recipe'
   task run: %w[test:init] do
-    recipe_dir
+    recipe_dir build_pkg_root
 
     unless Dir.exist? 'spec'
       warn 'The spec dir is missing - unable to run tests'
       Kernel.exit 1
     end
 
-    sh "docker exec #{@container} /build/tester"
+    sh "docker exec --env IN_DOCKER=1 #{@container} /build/test"
   end
 
   desc 'Tear down test environment'
   task clean: %w[test:init] do
-    recipe_dir
+    recipe_dir build_pkg_root
 
     sh "docker rm -f #{@container}"
   end
@@ -209,5 +287,7 @@ task test: %w[test:default]
 task publish: %w[publish:default]
 task lint: %i[cop]
 
+task build: %w[build:default]
+
 desc 'Default task - invoke build'
-task default: %w[build:default]
+task default: %w[build:all]

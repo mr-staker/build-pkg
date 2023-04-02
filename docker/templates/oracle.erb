@@ -1,0 +1,26 @@
+FROM oraclelinux:<%= versions[:oracle] %>
+MAINTAINER hello@mr.staker.ltd
+ENV SHELL=/bin/bash
+
+RUN dnf config-manager --set-enabled ol<%= versions[:oracle].split('.').first %>_UEKR<%= versions[:uek] %> && \
+  dnf install -y oracle-epel-release-el<%= versions[:oracle].split('.').first %>
+RUN dnf install -y gcc gcc-c++ make curl git autoconf automake libtool \
+  rpm-build kernel-rpm-macros dkms python3 python3-setuptools python3-cffi \
+  python3-distlib python3-packaging strace htop ncompress
+RUN curl -LO https://get.golang.org/$(uname)/go_installer && chmod +x go_installer && \
+  ./go_installer -version <%= versions[:go] %> && mv /root/.go /opt/go
+RUN curl -L -o omnibus.sh https://omnitruck.cinc.sh/install.sh && \
+  chmod +x omnibus.sh && ./omnibus.sh -v <%= versions[:cinc] %>
+RUN /opt/cinc/embedded/bin/gem install fpm-cookery -v <%= versions[:fpm_cookery] %>
+RUN /opt/cinc/embedded/bin/gem install serverspec -v <%= versions[:serverspec] %>
+RUN dnf install -y kernel-uek-devel libtirpc-devel libblkid-devel \
+  libuuid-devel libudev-devel openssl-devel zlib-devel libaio-devel \
+    libattr-devel elfutils-libelf-devel python3-devel libffi-devel
+RUN mkdir -p /home/user && chmod 0777 /home/user
+RUN ln -s /opt/cinc /opt/chef
+
+ENV GOROOT=/opt/go
+ENV GOPATH=/recipe/go
+ENV GOCACHE=/recipe/go/go-build
+ENV PATH=/opt/go/bin:/opt/cinc/embedded/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV HOME=/home/user
