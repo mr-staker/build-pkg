@@ -35,6 +35,10 @@ def build_pkg_config
       version: '0.20.1',
       sha256: 'f9d025295f15169ef0767460faa973aebbfb2933a55ded9500c50435c650eadc',
     },
+    hugo: {
+      version: '0.111.3',
+      sha256: 'b382aacb522a470455ab771d0e8296e42488d3ea4e61fe49c11c32ec7fb6ee8b',
+    },
     modulemd: {
       version: '2.14.0',
       sha256: '219bca4797a3de74ee961c0252067654e6ca5414e22610db7924826b1895e369',

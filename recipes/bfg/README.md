@@ -9,3 +9,9 @@ BFG removes large or troublesome blobs like git-filter-branch does for git repos
 ```bash
 bundle exec rake build:all
 ```
+
+## Publish
+
+```bash
+bundle exec rake publish:all
+```
