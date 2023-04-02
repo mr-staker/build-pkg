@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require 'yaml'
+
 # rubocop:disable Metrics/AbcSize
 # rubocop:disable Metrics/MethodLength
 def build_config
@@ -9,9 +11,10 @@ def build_config
     raise "ERR: pkg env var must be one of: #{pkgs}"
   end
 
+  config = YAML.load_file "#{File.expand_path(__dir__)}/config.yml"
   cfg = {
-    version: '1.2.2',
-    sha256: 'bc36f13b1bcb2ab52d046bfc3ec04a9bd1f89b070b4e8fca52eded235a583526',
+    version: config[:zck][:version],
+    sha256: config[:zck][:sha256],
     pkg: ENV['pkg']
   }
 

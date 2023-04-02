@@ -31,6 +31,10 @@ def build_pkg_config
       version: '1.14.0',
       sha256: '1a75e9390541f4b55d9c01256b361b815c1e0a263e2fb3d072b55c2911ead0b7',
     },
+    zck: {
+      version: '1.3.0',
+      sha256: '5563baa254b256e30e1fea87f94f53a5cf63a074898644f3f7ae5b58f446db03',
+    },
     zfs: {
       version: '2.1.5',
       sha256: '1913041e5c44ff07ca384346ad8145aeedf77e77cd1cea9ec5d533246691e10c',

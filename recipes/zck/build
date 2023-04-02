@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# build dependencies
+sudo apt install meson cmake pkg-config libc6-dev libzstd-dev libssl-dev libcurl4-openssl-dev libzstd-dev
+
+# binaries + docs
+bundle exec rake build pkg=bin
+# library
+bundle exec rake build pkg=lib
+# dev package - header and pkgconfig
+bundle exec rake build pkg=dev
+
+# test
+bundle exec rake test:all

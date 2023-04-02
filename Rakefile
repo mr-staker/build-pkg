@@ -221,6 +221,7 @@ namespace :test do
   desc 'Copy upstream test to recipe dir'
   task :copy do
     recipe_dir build_pkg_root
+    mkdir_p 'spec'
     %w[spec_helper.rb size_spec.rb].each do |file|
       cp "#{build_pkg_root}/spec/#{file}", "spec/#{file}"
     end

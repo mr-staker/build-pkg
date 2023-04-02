@@ -21,9 +21,9 @@ Vagrant.configure('2') do |config|
     python3-setuptools python3-cffi libffi-devel strace htop ncompress
 
     curl -L -o omnibus.sh https://omnitruck.cinc.sh/install.sh && \
-    chmod +x omnibus.sh && ./omnibus.sh -v #{build_config[:cinc_version]}
+    chmod +x omnibus.sh && ./omnibus.sh -v #{build_config[:cinc]}
     ln -sf /opt/cinc /opt/chef
 
-    /opt/cinc/embedded/bin/gem install fpm-cookery
+    /opt/cinc/embedded/bin/gem install fpm-cookery #{build_config[:fpm_cookery]}
   SCRIPT
 end

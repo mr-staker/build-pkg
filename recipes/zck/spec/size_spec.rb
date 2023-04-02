@@ -2,7 +2,7 @@
 
 require_relative 'spec_helper'
 
-describe 'zfs' do
+describe 'size' do
   test_path = ''
   if ENV['IN_DOCKER']
     test_path = '/build/'
