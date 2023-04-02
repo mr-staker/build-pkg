@@ -1,0 +1,11 @@
+#!/bin/bash
+
+set -euo pipefail
+
+test_path=""
+if [ -n "${IN_DOCKER-}" ]
+then
+  test_path="/build/"
+fi
+
+rspec "${test_path}spec/zfs_spec.rb"
