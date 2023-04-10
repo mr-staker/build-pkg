@@ -11,13 +11,35 @@ Supports Podman build backend as alternative to Docker.
 ## Build
 
 ```bash
-bundle exec rake build:docker image=ubuntu:20.04
-bundle exec rake build:docker image=oracle:8.6
+bundle exec rake build:all
 ```
 
-## Test
+## New key
 
 ```bash
-bundle exec rake test image=ubuntu:20.04
-bundle exec rake test image=oracle:8.6
+gpg --full-generate-key
+# RSA and RSA
+# 4096
+# Release Signing Key $YEAR # as comment
+```
+
+## Export public key
+
+```bash
+gpg --list-secret-keys --keyid-format=long
+[...]
+sec   rsa4096/$KEY_ID
+[...]
+gpg --armor --export $KEY_ID
+```
+
+## Export private key
+
+```bash
+gpg --list-secret-keys --keyid-format=long
+[...]
+sec   rsa4096/$KEY_ID
+      $KEY_ID_LONG
+[...]
+gpg --export-secret-keys $KEY_ID_LONG > $KEY_ID.key
 ```

@@ -43,6 +43,9 @@ def build_pkg_config
       version: '2.14.0',
       sha256: '219bca4797a3de74ee961c0252067654e6ca5414e22610db7924826b1895e369',
     },
+    staker_repo: {
+      version: '23.04.01',
+    },
     zck: {
       version: '1.3.0',
       sha256: '5563baa254b256e30e1fea87f94f53a5cf63a074898644f3f7ae5b58f446db03',
