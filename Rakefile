@@ -75,7 +75,7 @@ namespace :build do
   end
 
   desc 'Invoke recipe build script'
-  task all: %w[build:config] do
+  task all: %w[build:config test:copy] do
     recipe_dir build_pkg_root
     sh './build'
   end

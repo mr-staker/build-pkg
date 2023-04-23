@@ -1,9 +1,13 @@
 #!/bin/bash
 
+set -euo pipefail
+
+fingerprint='C8FF9465DC43E057F5D592EEC190D4B4328516A1'
+
 if [ -f /usr/bin/apt ]
 then
   apt -y install curl apt-transport-https gnupg2
-  curl 'https://keys.openpgp.org/vks/v1/by-fingerprint/8E0D38C40089F860005989ACFD6652320303527F' | apt-key add -
+  curl "https://keys.openpgp.org/vks/v1/by-fingerprint/$fingerprint" | apt-key add -
   echo 'deb [arch=amd64] https://deb.staker.ltd stable main' | tee /etc/apt/sources.list.d/staker.list
   apt update
 
@@ -13,11 +17,11 @@ fi
 
 if [ -f /usr/bin/dnf ]
 then
-  cat << 'EOF' | tee /etc/yum.repos.d/staker.repo
+  cat << EOF | tee /etc/yum.repos.d/staker.repo
 [staker]
 name=Mr Staker rpm repository
-baseurl=https://rpm.staker.ltd/$basearch/
-gpgkey=https://keys.openpgp.org/vks/v1/by-fingerprint/8E0D38C40089F860005989ACFD6652320303527F
+baseurl=https://rpm.staker.ltd/\$basearch/
+gpgkey=https://keys.openpgp.org/vks/v1/by-fingerprint/$fingerprint
 gpgcheck=1
 repo_gpgcheck=1
 enabled=1

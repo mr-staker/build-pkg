@@ -44,15 +44,15 @@ def build_pkg_config
       sha256: '219bca4797a3de74ee961c0252067654e6ca5414e22610db7924826b1895e369',
     },
     staker_repo: {
-      version: '23.04.01',
+      version: '23.04.02',
     },
     zck: {
       version: '1.3.0',
       sha256: '5563baa254b256e30e1fea87f94f53a5cf63a074898644f3f7ae5b58f446db03',
     },
     zfs: {
-      version: '2.1.5',
-      sha256: '1913041e5c44ff07ca384346ad8145aeedf77e77cd1cea9ec5d533246691e10c',
+      version: '2.1.11',
+      sha256: 'a54fe4e854d0a207584f1799a80e165eae66bc30dc8e8c96a1f99ed9d4d8ceb2',
     }
   }
 end

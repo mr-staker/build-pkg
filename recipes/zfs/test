@@ -8,4 +8,4 @@ then
   test_path="/build/"
 fi
 
-rspec "${test_path}spec/zfs_spec.rb"
+rspec "${test_path}spec/size_spec.rb"

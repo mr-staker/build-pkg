@@ -21,6 +21,7 @@ gpg --full-generate-key
 # RSA and RSA
 # 4096
 # Release Signing Key $YEAR # as comment
+# 3 years expiration
 ```
 
 ## Export public key
