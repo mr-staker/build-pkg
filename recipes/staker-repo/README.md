@@ -44,3 +44,15 @@ sec   rsa4096/$KEY_ID
 [...]
 gpg --export-secret-keys $KEY_ID_LONG > $KEY_ID.key
 ```
+
+## Import private key
+
+```bash
+gpg --import $KEY_ID.key
+```
+
+## Easy import into Keybase
+
+```bash
+keybase pgp select --multi # select the newly created/imported GPG key
+```
