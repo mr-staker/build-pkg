@@ -19,12 +19,11 @@ def build_pkg_config
 
   {
     versions: {
-      oracle: '8.7',
-      uek: '6',
-      ubuntu: '20.04',
+      rocky: '9.1',
+      ubuntu: '22.04',
       cinc: '18.0.185', # kept in sync with CINC Workstation
       serverspec: '2.42.2',
-      fpm_cookery: '0.36.0',
+      fpm_cookery: '0.37.0',
       go: vars.match(/GO_LATEST_TESTED="go(.*?)"/)[1]
     },
     bfg: {

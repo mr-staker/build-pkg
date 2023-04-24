@@ -14,5 +14,5 @@ bundle exec rake build:docker image=ubuntu
 bundle exec rake test image=ubuntu
 
 bundle exec rake clean
-bundle exec rake build:docker image=oracle
-bundle exec rake test image=oracle
+bundle exec rake build:docker image=rocky
+bundle exec rake test image=rocky

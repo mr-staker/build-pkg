@@ -2,9 +2,9 @@
 
 set -euo pipefail
 
-bundle exec rake build:docker image=oracle
+bundle exec rake build:docker image=rocky
 bundle exec rake build:docker image=ubuntu
 
 bundle exec rake test:copy
-bundle exec rake test image=oracle
+bundle exec rake test image=rocky
 bundle exec rake test image=ubuntu

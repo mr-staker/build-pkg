@@ -3,7 +3,7 @@
 require_relative 'metadata'
 
 Vagrant.configure('2') do |config|
-  config.vm.box = 'generic/oracle8'
+  config.vm.box = 'rockylinux/9'
   config.vm.synced_folder '.', '/recipe'
 
   config.vm.provider :virtualbox do |vb|
@@ -12,7 +12,7 @@ Vagrant.configure('2') do |config|
   end
 
   config.vm.provision 'shell', inline: <<~SCRIPT
-    dnf -y install oracle-epel-release-el8
+    dnf -y install epel-release
 
     dnf -y install git gcc make autoconf automake libtool rpm-build \
     kernel-rpm-macros dkms libtirpc-devel libblkid-devel libuuid-devel \
