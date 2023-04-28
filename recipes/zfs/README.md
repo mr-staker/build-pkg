@@ -23,3 +23,9 @@ bundle exec rake build:vagrant # rpm - inside a VM
 # test build results
 bundle exec rake test:all
 ```
+
+## Publish
+
+```bash
+bundle exec rake publish:all
+```

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -euo pipefail
+
+bundle exec rake publish target=deb repo=staker-deb
+bundle exec rake publish target=rpm repo=staker-rpm
