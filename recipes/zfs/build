@@ -10,9 +10,9 @@ sudo apt install curl ca-certificates build-essential git autoconf automake \
   libattr1-dev libelf-dev python3-dev libffi-dev
 
 bundle exec rake clean
-bundle exec rake build:docker image=ubuntu
-bundle exec rake test image=ubuntu
-
-bundle exec rake clean
 bundle exec rake build:docker image=rocky
 bundle exec rake test image=rocky
+
+bundle exec rake clean
+bundle exec rake build:docker image=ubuntu
+bundle exec rake test image=ubuntu

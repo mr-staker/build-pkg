@@ -6,7 +6,7 @@ Repository hosting our fpm-cookery package build recipes.
 
 ```bash
 # install development tools and Ruby environment
-curl -OL https://cinc.osuosl.org/files/stable/cinc-workstation/23.3.1030/ubuntu/22.04/cinc-workstation_23.3.1030-1_amd64.deb && sudo apt install ./cinc-workstation_23.3.1030-1_amd64.deb
+curl -L https://omnitruck.cinc.sh/install.sh | sudo bash -s -- -P cinc-workstation -v 23.4.1032
 eval "$(cinc shell-init zsh)" # or bash if you use it
 
 # install Docker Desktop for Windows/Mac/Linux

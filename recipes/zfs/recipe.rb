@@ -26,7 +26,7 @@ class Zfs < FPM::Cookery::Recipe
       'libzfs5-devel' => %w[libzfs5 staker-repo],
       'libuutil3' => %w[libc6 staker-repo],
       'libzfs5' => %w[
-        libssl1.1 zlib1g libuuid1 libblkid1 libudev1 libc6 zfs-dkms staker-repo
+        libssl3 zlib1g libuuid1 libblkid1 libudev1 libc6 zfs-dkms staker-repo
       ],
       'libzpool5' => %w[
         libc6 libzfs5 libnvpair3 libuuid1 libblkid1 libudev1 staker-repo
@@ -154,12 +154,19 @@ class Zfs < FPM::Cookery::Recipe
       puts "===> Repackage #{pkg_name}"
 
       Dir.chdir pkgdir do
-        # invoke a patched version of fpm to change metadata and xz compress
+        # invoke fpm to change metadata and xz compress
         # the resulting packages
         rm_f pkgdir(pkg_file)
 
+        use_pkg_name = pkg_name
+        if pkg_name.end_with?('devel')
+          use_pkg_name = pkg_name.sub('devel', 'dev')
+        end
+
         args = [
-          workdir('fpm-shim').to_s,
+          '/opt/chef/embedded/bin/fpm',
+          '--name',
+          use_pkg_name,
           '--maintainer',
           build_config[:maintainer],
           '--input-type',

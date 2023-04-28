@@ -15,8 +15,8 @@ class Zck < FPM::Cookery::Recipe
   maintainer 'hello@mr.staker.ltd'
   license 'BSD-2-Clause'
 
-  # n.b the target is Ubuntu 20.04
-  depends %w[staker-repo libc6 libzstd1 libssl1.1] + build_config[:depends]
+  # n.b the target is Ubuntu 22.04
+  depends %w[staker-repo libc6 libzstd1 libssl3] + build_config[:depends]
   build_depends %w[meson libc6-dev libzstd-dev libssl-dev]
 
   def build

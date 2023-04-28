@@ -21,7 +21,7 @@ def build_pkg_config
     versions: {
       rocky: '9.1',
       ubuntu: '22.04',
-      cinc: '18.0.185', # kept in sync with CINC Workstation
+      cinc: '18.2.7', # kept in sync with CINC Workstation
       serverspec: '2.42.2',
       fpm_cookery: '0.37.0',
       go: vars.match(/GO_LATEST_TESTED="go(.*?)"/)[1]
